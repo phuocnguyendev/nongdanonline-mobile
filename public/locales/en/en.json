@@ -1,0 +1,25 @@
+{
+  "login": {
+    "email": "Email",
+    "password": "Password",
+    "invalidEmail": "Invalid email address",
+    "autoLogin": "Auto Login",
+    "forgotPassword": "Forgot password?",
+    "signIn": "Sign In",
+    "noAccount": "Don't have an account?",
+    "register": "Register",
+    "or": "Or",
+    "signInWithGoogle": "Sign in with Google",
+    "signInWithApple": "Sign in with Apple ID",
+    "appleSignInMessage": "Apple sign-in is currently in development.",
+    "googleSignInMessage": "Google sign-in successful, but currently under maintenance!",
+    "signInFailed": "Sign in failed. Please try again."
+  },
+
+  "validation": {
+    "invalidEmail": "Invalid email address",
+    "requiredEmail": "Please enter your email",
+    "minPassword": "Password must be at least 6 characters",
+    "requiredPassword": "Please enter your password"
+  }
+}

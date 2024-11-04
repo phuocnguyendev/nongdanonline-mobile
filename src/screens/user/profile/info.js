@@ -1,46 +1,47 @@
-import React, { useState } from "react";
+import * as ImagePicker from 'expo-image-picker'
+import React, { useState } from 'react'
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  Image,
   ActivityIndicator,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
   TextInput,
-} from "react-native";
-import * as ImagePicker from "expo-image-picker";
+  TouchableOpacity,
+  View,
+} from 'react-native'
 
 export function Info() {
-  const [name, setName] = useState("John Doe");
-  const [phone, setPhone] = useState("0987654321");
+  const [name, setName] = useState('John Doe')
+  const [phone, setPhone] = useState('0987654321')
   const [selectedImage, setSelectedImage] = useState(
-    "https://firebasestorage.googleapis.com/v0/b/nongdanonline-458d0.appspot.com/o/LandingPage%2Ffarmer.png?alt=media&token=027e1e3c-c0d7-48db-aa91-edca13609ad3"
-  );
-  const [loading, setLoading] = useState(false);
+    'https://firebasestorage.googleapis.com/v0/b/nongdanonline-458d0.appspot.com/o/LandingPage%2Ffarmer.png?alt=media&token=027e1e3c-c0d7-48db-aa91-edca13609ad3',
+  )
+  const [loading, setLoading] = useState(false)
 
   const openImagePicker = async () => {
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync()
 
     if (permissionResult.granted === false) {
-      alert("Permission to access camera roll is required!");
-      return;
+      alert('Permission to access camera roll is required!')
+      return
     }
 
-    setLoading(true);
+    setLoading(true)
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
-    });
+    })
 
-    setLoading(false);
+    setLoading(false)
 
     if (!result.cancelled && result.assets && result.assets.length > 0) {
-      setSelectedImage(result.assets[0].uri);
+      setSelectedImage(result.assets[0].uri)
     }
-  };
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -63,9 +64,7 @@ export function Info() {
 
           <View style={styles.info}>
             <Text style={styles.label}>Email</Text>
-            <Text style={[styles.emailText]}>
-              johndoe123example@gmail.com
-            </Text>
+            <Text style={[styles.emailText]}>johndoe123example@gmail.com</Text>
           </View>
 
           <View style={styles.info}>
@@ -92,7 +91,7 @@ export function Info() {
                 />
               )}
               <TouchableOpacity
-                style={[styles.button, { backgroundColor: "#1d4ed8" }]}
+                style={[styles.button, { backgroundColor: '#1d4ed8' }]}
                 onPress={openImagePicker}
               >
                 <Text style={styles.buttonText}>Chọn Ảnh</Text>
@@ -100,7 +99,7 @@ export function Info() {
               <Text style={styles.text}>Dung lượng file tối đa 1Mb</Text>
               <Text style={styles.text}>Định dạng: JPEG, PNG.</Text>
               <TouchableOpacity
-                style={[styles.button, { backgroundColor: "#00a86b" }]}
+                style={[styles.button, { backgroundColor: '#00a86b' }]}
               >
                 <Text style={styles.buttonText}>Lưu</Text>
               </TouchableOpacity>
@@ -109,73 +108,73 @@ export function Info() {
         </View>
       </View>
     </ScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     padding: 20,
-    backgroundColor: "#f4f4f4",
+    backgroundColor: '#f4f4f4',
   },
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 10,
     padding: 20,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 10,
     elevation: 5,
-    alignItems: "center",
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 10,
-    textAlign: "center",
-    color: "#333",
+    textAlign: 'center',
+    color: '#333',
   },
   subtitle: {
     fontSize: 16,
-    textAlign: "center",
+    textAlign: 'center',
     marginBottom: 20,
-    color: "#555",
+    color: '#555',
   },
   viewInput: {
-    width: "100%",
+    width: '100%',
     marginBottom: 20,
   },
   info: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 15,
   },
   label: {
     fontSize: 16,
-    fontWeight: "bold",
-    width: "30%",
-    color: "#333",
+    fontWeight: 'bold',
+    width: '30%',
+    color: '#333',
   },
   textInput: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 10,
     flex: 1,
     fontSize: 16,
-    backgroundColor: "#fafafa",
+    backgroundColor: '#fafafa',
   },
   emailText: {
-    color: "blue",
-    fontWeight: "bold",
+    color: 'blue',
+    fontWeight: 'bold',
     fontSize: 16,
     flex: 1,
   },
   uploadImage: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   profileImage: {
     width: 100,
@@ -183,7 +182,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginVertical: 20,
     borderWidth: 2,
-    borderColor: "#00a86b",
+    borderColor: '#00a86b',
   },
   button: {
     paddingVertical: 12,
@@ -192,15 +191,15 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   buttonText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 16,
-    textAlign: "center",
-    fontWeight: "bold",
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
   text: {
     fontSize: 14,
-    color: "#555",
-    textAlign: "center",
+    color: '#555',
+    textAlign: 'center',
     marginBottom: 5,
   },
-});
+})

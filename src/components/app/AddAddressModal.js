@@ -1,114 +1,123 @@
-import React, { useState, useEffect } from "react";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import { Picker } from '@react-native-picker/picker'
+import React, { useEffect, useState } from 'react'
 import {
+  Alert,
   Modal,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
   ScrollView,
-  Alert
-} from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { Picker } from "@react-native-picker/picker";
-import { TouchableWithoutFeedback } from "react-native";
-import { postAddress } from "../../service/user/address";
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native'
+import { postAddress } from '../../api/user/index'
 
 function AddAddressModal({ visible, onClose }) {
-  const [isChecked, setIsChecked] = useState(false);
-  const [provinces, setProvinces] = useState([]);
-  const [districts, setDistricts] = useState([]);
-  const [wards, setWards] = useState([]);
+  const [isChecked, setIsChecked] = useState(false)
+  const [provinces, setProvinces] = useState([])
+  const [districts, setDistricts] = useState([])
+  const [wards, setWards] = useState([])
 
-  const [name, setName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [detailAddress, setDetailAddress] = useState("");
+  const [name, setName] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [detailAddress, setDetailAddress] = useState('')
 
-  const [selectedProvince, setSelectedProvince] = useState(null);
-  const [selectedDistrict, setSelectedDistrict] = useState(null);
-  const [selectedWard, setSelectedWard] = useState(null);
+  const [selectedProvince, setSelectedProvince] = useState(null)
+  const [selectedDistrict, setSelectedDistrict] = useState(null)
+  const [selectedWard, setSelectedWard] = useState(null)
 
   const handleChange = ({ key, value }) => {
     switch (key) {
-      case "name":
-        setName(value);
-        break;
-      case "phoneNumber":
-        setPhoneNumber(value);
-        break;
-      case "detailAddress":
-        setDetailAddress(value);
+      case 'name':
+        setName(value)
+        break
+      case 'phoneNumber':
+        setPhoneNumber(value)
+        break
+      case 'detailAddress':
+        setDetailAddress(value)
       default:
-        break;
+        break
     }
-  };
+  }
 
   useEffect(() => {
     fetch(
-      "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json"
+      'https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json',
     )
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error('Network response was not ok')
         }
-        return response.json();
+        return response.json()
       })
       .then((json) => {
-        setProvinces(json); // Giả sử json là mảng tỉnh
+        setProvinces(json) // Giả sử json là mảng tỉnh
       })
       .catch((error) => {
-        console.error("Error fetching data:", error); // Log lỗi
-      });
-  }, []);
+        console.error('Error fetching data:', error) // Log lỗi
+      })
+  }, [])
 
   const handleProvinceChange = (province) => {
-    setSelectedProvince(province);
-    setDistricts(province?.Districts || []); // Cập nhật districts dựa trên province đã chọn
-    setSelectedDistrict(null);
-    setSelectedWard(null);
-    setWards([]);
-  };
+    setSelectedProvince(province)
+    setDistricts(province?.Districts || []) // Cập nhật districts dựa trên province đã chọn
+    setSelectedDistrict(null)
+    setSelectedWard(null)
+    setWards([])
+  }
 
   const handleDistrictChange = (district) => {
-    setSelectedDistrict(district);
-    setWards(district?.Wards || []); // Cập nhật wards dựa trên district đã chọn
-    setSelectedWard(null);
-  };
+    setSelectedDistrict(district)
+    setWards(district?.Wards || []) // Cập nhật wards dựa trên district đã chọn
+    setSelectedWard(null)
+  }
 
   const handleChecked = () => {
-    setIsChecked(!isChecked);
-  };
+    setIsChecked(!isChecked)
+  }
 
   const getFullAddress = () => {
     return `${detailAddress}, ${selectedWard?.Name || ''}, ${selectedDistrict?.Name || ''}, ${selectedProvince?.Name || ''}`
       .trim()
       .replace(/, +/g, ', ')
-      .replace(/ ,/g, ', ');
-  }; 
+      .replace(/ ,/g, ', ')
+  }
 
   const handleFinish = async () => {
-    if (!name || !phoneNumber || !detailAddress || !selectedProvince || !selectedDistrict || !selectedWard) {
-      Alert.alert("Thông báo", "Vui lòng điền đầy đủ thông tin trước khi hoàn thành.");
-      return;
+    if (
+      !name ||
+      !phoneNumber ||
+      !detailAddress ||
+      !selectedProvince ||
+      !selectedDistrict ||
+      !selectedWard
+    ) {
+      Alert.alert(
+        'Thông báo',
+        'Vui lòng điền đầy đủ thông tin trước khi hoàn thành.',
+      )
+      return
     }
     try {
-      const fullAddress = getFullAddress();
+      const fullAddress = getFullAddress()
       const data = {
         name: name,
         address: fullAddress,
         phone: phoneNumber,
         isdefault: isChecked,
-      };
-      await postAddress(data);
-      Alert.alert("Thông báo", "Địa chỉ đã được lưu thành công!");
-      onClose();
+      }
+      await postAddress(data)
+      Alert.alert('Thông báo', 'Địa chỉ đã được lưu thành công!')
+      onClose()
     } catch (error) {
-      console.error("Error:", error);
-      Alert.alert("Thông báo", "Đã xảy ra lỗi trong quá trình lưu địa chỉ.");
-      onClose();
+      console.error('Error:', error)
+      Alert.alert('Thông báo', 'Đã xảy ra lỗi trong quá trình lưu địa chỉ.')
+      onClose()
     }
-  };
-  
+  }
 
   return (
     <Modal visible={visible} transparent={true} animationType="slide">
@@ -124,7 +133,7 @@ function AddAddressModal({ visible, onClose }) {
                 <Text style={styles.label}>Họ và tên</Text>
                 <TextInput
                   onChangeText={(text) =>
-                    handleChange({ key: "name", value: text })
+                    handleChange({ key: 'name', value: text })
                   }
                   value={name}
                   placeholder="Nhập họ và tên của bạn"
@@ -136,7 +145,7 @@ function AddAddressModal({ visible, onClose }) {
                 <Text style={styles.label}>Số điện thoại</Text>
                 <TextInput
                   onChangeText={(text) =>
-                    handleChange({ key: "phoneNumber", value: text })
+                    handleChange({ key: 'phoneNumber', value: text })
                   }
                   value={phoneNumber}
                   placeholder="Nhập số điện thoại của bạn"
@@ -212,7 +221,7 @@ function AddAddressModal({ visible, onClose }) {
                 <Text style={styles.label}>Địa chỉ cụ thể</Text>
                 <TextInput
                   onChangeText={(text) =>
-                    handleChange({ key: "detailAddress", value: text })
+                    handleChange({ key: 'detailAddress', value: text })
                   }
                   value={detailAddress}
                   placeholder="Nhập địa chỉ cụ thể của bạn"
@@ -226,7 +235,7 @@ function AddAddressModal({ visible, onClose }) {
                 <Ionicons
                   size={22}
                   color="#00796b"
-                  name={isChecked ? "checkbox" : "square-outline"}
+                  name={isChecked ? 'checkbox' : 'square-outline'}
                   style={styles.checkboxIcon}
                 />
               </TouchableOpacity>
@@ -237,7 +246,10 @@ function AddAddressModal({ visible, onClose }) {
               <TouchableOpacity style={styles.closeButton} onPress={onClose}>
                 <Text style={styles.closeButtonText}>Trở lại</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.finishButton} onPress={handleFinish}>
+              <TouchableOpacity
+                style={styles.finishButton}
+                onPress={handleFinish}
+              >
                 <Text style={styles.finishButtonText}>Hoàn thành</Text>
               </TouchableOpacity>
             </View>
@@ -245,10 +257,10 @@ function AddAddressModal({ visible, onClose }) {
         </View>
       </ScrollView>
     </Modal>
-  );
+  )
 }
 
-export default AddAddressModal;
+export default AddAddressModal
 
 const styles = StyleSheet.create({
   scrollViewContainer: {
@@ -256,37 +268,37 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
     paddingHorizontal: 30,
   },
   modalContent: {
     paddingVertical: 20,
     paddingHorizontal: 15,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 10,
-    alignItems: "center",
+    alignItems: 'center',
     elevation: 5,
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
     marginBottom: 20,
   },
   inputView: {
-    width: "100%",
+    width: '100%',
   },
   input: {
     marginBottom: 15,
   },
   inputBorder: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderRadius: 10,
     fontSize: 16,
-    width: "100%",
+    width: '100%',
   },
   label: {
     fontSize: 16,
@@ -294,16 +306,16 @@ const styles = StyleSheet.create({
   },
   inputText: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     paddingHorizontal: 20,
     paddingVertical: 8,
     borderRadius: 10,
     fontSize: 16,
-    width: "100%",
+    width: '100%',
   },
   checked: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 30,
   },
   checkboxIcon: {
@@ -313,36 +325,36 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
   },
   closeButton: {
-    backgroundColor: "#f5f5f5",
+    backgroundColor: '#f5f5f5',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: '#ddd',
   },
   closeButtonText: {
     fontSize: 16,
-    color: "#333",
+    color: '#333',
   },
   finishButton: {
-    backgroundColor: "red",
+    backgroundColor: 'red',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
   },
   finishButtonText: {
     fontSize: 16,
-    color: "#fff",
+    color: '#fff',
   },
   closeIcon: {
-    position: "absolute",
+    position: 'absolute',
     top: 10,
     right: 10,
     zIndex: 1,
   },
-});
+})
