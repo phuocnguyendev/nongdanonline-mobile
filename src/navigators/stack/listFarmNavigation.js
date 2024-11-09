@@ -14,14 +14,14 @@ export default function ListFarmNavigation({ navigation }) {
         component={FarmList}
         options={{
           headerShown: true,
-          title: 'Danh sách Trang trại', // Tiêu đề cho header
+          title: 'Danh sách Trang trại',
           headerLeft: () => (
             <Ionicons
               name="menu"
               size={24}
               color="#fff"
               style={{ marginLeft: 15 }}
-              onPress={() => navigation.toggleDrawer()} // Mở Drawer khi nhấn
+              onPress={() => navigation.toggleDrawer()}
             />
           ),
           headerRight: () => (
@@ -43,9 +43,9 @@ export default function ListFarmNavigation({ navigation }) {
       />
       <Stack.Screen
         name="AboutFarm Navigation"
-        options={{ headerShown: false }}
         component={AboutFarmNavigation}
-      ></Stack.Screen>
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   )
 }

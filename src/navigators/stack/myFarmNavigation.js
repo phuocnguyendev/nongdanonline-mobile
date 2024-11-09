@@ -1,9 +1,13 @@
 import { Ionicons } from '@expo/vector-icons'
 import { createStackNavigator } from '@react-navigation/stack'
 import IconButton from '../../components/ui/IconButton'
-import { MyFarm } from '../../screens/homeTab'
-import MyFarmEditNavigation from './myFarmEditNavigation'
-
+import AddAnimalScreen from '../../screens/homeTab/AddAnimalScreen'
+import AddPackageScreen from '../../screens/homeTab/AddPackageScreen'
+import InfoScreen from '../../screens/homeTab/InfoScreen'
+import MainImageScreen from '../../screens/homeTab/MainImageScreen'
+import { MyFarm } from '../../screens/homeTab/MyFarm'
+import ShoppingCart from '../../screens/homeTab/ShoppingCart'
+import MyFarmEditNavigation from '../stack/myFarmEditNavigation'
 const Stack = createStackNavigator()
 
 export default function MyFarmNavigation({ navigation }) {
@@ -21,7 +25,7 @@ export default function MyFarmNavigation({ navigation }) {
               size={24}
               color="#fff"
               style={{ marginLeft: 15 }}
-              onPress={() => navigation.toggleDrawer()} // Mở Drawer khi nhấn
+              onPress={() => navigation.toggleDrawer()}
             />
           ),
           headerRight: () => (
@@ -46,6 +50,56 @@ export default function MyFarmNavigation({ navigation }) {
         component={MyFarmEditNavigation}
         options={{
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="InfoScreen"
+        component={InfoScreen}
+        options={{
+          title: 'Thông tin trang trại',
+          headerStyle: { backgroundColor: '#00a86b' },
+          headerTintColor: '#fff',
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="AddAnimalScreen"
+        component={AddAnimalScreen}
+        options={{
+          title: 'Thêm động vật mới',
+          headerStyle: { backgroundColor: '#00a86b' },
+          headerTintColor: '#fff',
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="AddPackageScreen"
+        component={AddPackageScreen}
+        options={{
+          title: 'Thêm gói mới',
+          headerStyle: { backgroundColor: '#00a86b' },
+          headerTintColor: '#fff',
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="MainImageScreen"
+        component={MainImageScreen}
+        options={{
+          title: 'Chi tiết hình ảnh',
+          headerStyle: { backgroundColor: '#00a86b' },
+          headerTintColor: '#fff',
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="ShoppingCart"
+        component={ShoppingCart}
+        options={{
+          title: 'Giỏ hàng',
+          headerStyle: { backgroundColor: '#00a86b' },
+          headerTintColor: '#fff',
+          headerTitleAlign: 'center',
         }}
       />
     </Stack.Navigator>

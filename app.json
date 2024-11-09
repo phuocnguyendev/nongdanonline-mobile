@@ -12,7 +12,8 @@
       "backgroundColor": "#fff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kevintruong.NongDanOnline"
     },
     "android": {
       "adaptiveIcon": {
