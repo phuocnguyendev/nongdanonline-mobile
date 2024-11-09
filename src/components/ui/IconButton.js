@@ -1,10 +1,8 @@
-import { Pressable, StyleSheet, View, Text } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { useContext } from 'react'; // Add this import
-import { CartContext } from '../../reducers/CartContext'; // Add this import
+import { Ionicons } from '@expo/vector-icons'
+import { Pressable, StyleSheet, View } from 'react-native'
 
 function IconButton({ icon, color, onPress }) {
-  const { cart } = useContext(CartContext);
+  // const { cart } = useContext(CartContext);
 
   return (
     <Pressable
@@ -13,17 +11,17 @@ function IconButton({ icon, color, onPress }) {
     >
       <View style={styles.iconContainer}>
         <Ionicons name={icon} size={24} color={color} />
-        {cart.length > 0 && (
-          <View style={styles.badgeContainer}>
-            <Text style={styles.badgeText}>{cart.length}</Text>
-          </View>
-        )}
+        {/* {cart.length > 0 && ( */}
+        <View style={styles.badgeContainer}>
+          {/* <Text style={styles.badgeText}>{cart.length}</Text> */}
+        </View>
+        {/* )} */}
       </View>
     </Pressable>
-  );
+  )
 }
 
-export default IconButton;
+export default IconButton
 
 const styles = StyleSheet.create({
   pressed: {
@@ -35,23 +33,23 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     marginVertical: 2,
     borderWidth: 1,
-    borderColor: "green",
-    backgroundColor:"#f6f6f6"
+    borderColor: 'green',
+    backgroundColor: '#f6f6f6',
   },
   badgeContainer: {
-    position: "absolute",
+    position: 'absolute',
     right: -10,
     top: -5,
-    backgroundColor: "red",
+    backgroundColor: 'red',
     borderRadius: 10,
     width: 20,
     height: 20,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   badgeText: {
-    color: "white",
+    color: 'white',
     fontSize: 12,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
-});
+})

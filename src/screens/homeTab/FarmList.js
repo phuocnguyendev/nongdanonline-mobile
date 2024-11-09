@@ -77,7 +77,7 @@ export function FarmList({ navigation }) {
 
   return (
     <FlatList
-      data={farms.data}
+      data={farms}
       renderItem={renderFarmItem}
       keyExtractor={(item) => item.farmID.toString()}
     />

@@ -1,4 +1,3 @@
-// tab/tabNavigation.js
 import { Ionicons } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React from 'react'
@@ -31,13 +30,21 @@ function TabNavigation({ navigation }) {
         tabBarActiveTintColor: '#00a86b',
         tabBarInactiveTintColor: 'gray',
         tabBarStyle: {
-          height: 60,
-          paddingBottom: Platform.OS === 'ios' ? 10 : 0,
+          height: 70, // Slightly taller for a cleaner look
+          paddingBottom: Platform.OS === 'ios' ? 15 : 10,
+          paddingTop: 10,
+          backgroundColor: '#f8f8f8', // Softer background
           borderTopWidth: 0,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 3 },
+          shadowOpacity: 0.2,
+          shadowRadius: 4,
+          elevation: 5,
         },
         tabBarLabelStyle: {
-          fontSize: 12,
-          marginBottom: 5,
+          fontSize: 13,
+          fontWeight: '600',
+          marginBottom: Platform.OS === 'ios' ? 8 : 6,
           textAlign: 'center',
         },
       }}
@@ -48,9 +55,14 @@ function TabNavigation({ navigation }) {
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home-sharp" size={size} color={color} />
+            <Ionicons
+              name="home-sharp"
+              size={size}
+              color={color}
+              style={{ paddingBottom: 5 }}
+            />
           ),
-          tabBarLabel: 'Trang trại của tôi',
+          tabBarLabel: 'Home',
           unmountOnBlur: true,
         }}
       />
@@ -60,9 +72,65 @@ function TabNavigation({ navigation }) {
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="list-sharp" size={size} color={color} />
+            <Ionicons
+              name="list-sharp"
+              size={size}
+              color={color}
+              style={{ paddingBottom: 5 }}
+            />
           ),
           tabBarLabel: 'Danh sách Trang trại',
+          unmountOnBlur: true,
+        }}
+      />
+      <Tab.Screen
+        name="Messages"
+        component={Placeholder}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons
+              name="chatbubble-ellipses-outline"
+              size={size}
+              color={color}
+              style={{ paddingBottom: 5 }}
+            />
+          ),
+          tabBarLabel: 'Tin nhắn',
+          unmountOnBlur: true,
+        }}
+      />
+      <Tab.Screen
+        name="Notifications"
+        component={Placeholder}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons
+              name="notifications-outline"
+              size={size}
+              color={color}
+              style={{ paddingBottom: 5 }}
+            />
+          ),
+          tabBarLabel: 'Thông báo',
+          unmountOnBlur: true,
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={Placeholder}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons
+              name="settings-outline"
+              size={size}
+              color={color}
+              style={{ paddingBottom: 5 }}
+            />
+          ),
+          tabBarLabel: 'Cài đặt',
           unmountOnBlur: true,
         }}
       />
