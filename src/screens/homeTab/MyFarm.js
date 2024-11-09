@@ -23,6 +23,7 @@ export function MyFarm({ navigation }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [open, setOpen] = useState(false)
+  const pageSize = 5 // Number of items per page
 
   useEffect(() => {
     const fetchFarms = async () => {
@@ -40,13 +41,12 @@ export function MyFarm({ navigation }) {
   )
 
   const fetchBlocks = useCallback(
-    debounce(async (farmID, page = 1) => {
+    debounce(async (farmID, pageIndex = 1) => {
       setLoadingBlocks(true)
-      const response = await getBlocksByFarm(farmID, page)
-      console.log('Full API response:', JSON.stringify(response, null, 2))
-      const { items, totalPages } = response
+      const response = await getBlocksByFarm(farmID, pageIndex, pageSize)
+      const { items, totalPages: fetchedTotalPages } = response
       setBlocks(items)
-      setTotalPages(totalPages)
+      setTotalPages(fetchedTotalPages)
       setLoadingBlocks(false)
     }, 300),
     [],
@@ -56,7 +56,7 @@ export function MyFarm({ navigation }) {
     (farmID) => {
       setSelectedFarm(farmID)
       setCurrentPage(1)
-      fetchBlocks(farmID, 1)
+      fetchBlocks(farmID, 1) // Fetch first page initially
     },
     [fetchBlocks],
   )
@@ -76,20 +76,12 @@ export function MyFarm({ navigation }) {
       fetchBlocks(selectedFarm, prevPage)
     }
   }
-
-  const combinedData = useMemo(
-    () => (blocks.length ? [...blocks] : []),
-    [blocks],
-  )
-
   const handleNavigateToAddAnimal = (block) => {
     navigation.navigate('AddAnimalScreen', {
-      blockOwnerUserID: block.blockOwnerUserID,
-      farmId: selectedFarm,
-      animalTypeId: block.animalTypeID,
+      blockData: block,
+      farmID: selectedFarm,
     })
   }
-
   const renderItem = useCallback(
     ({ item }) => {
       const animal = item.animalOwnerUsers?.[0]
@@ -101,9 +93,10 @@ export function MyFarm({ navigation }) {
           }
           title={animal?.animalName || 'Chưa có vật nuôi'}
           farmCode={item.blockUserCode}
-          hasAnimal={animal != null}
+          hasAnimal={!!animal}
           navigation={navigation}
           blockData={item}
+          farmID={selectedFarm}
           onPress={() => handleNavigateToAddAnimal(item)}
         />
       )
@@ -142,46 +135,37 @@ export function MyFarm({ navigation }) {
 
           {loadingBlocks ? (
             <ActivityIndicator size="large" color="#00a86b" />
-          ) : combinedData.length === 0 ? (
+          ) : blocks.length === 0 ? (
             <Text style={styles.text}>Bạn cần chọn trang trại để hiển thị</Text>
           ) : (
             <View style={styles.flatListContainer}>
               <FlatList
-                data={combinedData}
+                data={blocks}
                 renderItem={renderItem}
-                keyExtractor={(item, index) =>
-                  item.blockOwnerUserID || `package-${index}`
-                }
+                keyExtractor={(item) => item.blockOwnerUserID}
                 initialNumToRender={5}
                 maxToRenderPerBatch={5}
                 updateCellsBatchingPeriod={50}
                 windowSize={11}
-                getItemLayout={(data, index) => ({
-                  length: 80,
-                  offset: 80 * index,
-                  index,
-                })}
                 scrollEnabled={false}
-                navigation={navigation}
               />
-
-              <View style={styles.paginationContainer}>
-                <Button
-                  title="Previous"
-                  onPress={handlePreviousPage}
-                  disabled={currentPage === 1}
-                />
-                <Text>{`${currentPage} / ${totalPages}`}</Text>
-                <Button
-                  title="Next"
-                  onPress={handleNextPage}
-                  disabled={currentPage === totalPages}
-                />
-              </View>
             </View>
           )}
 
-          {/* MyPackageList component in a separate container */}
+          <View style={styles.paginationContainer}>
+            <Button
+              title="Previous"
+              onPress={handlePreviousPage}
+              disabled={currentPage === 1}
+            />
+            <Text>{`${currentPage} / ${totalPages}`}</Text>
+            <Button
+              title="Next"
+              onPress={handleNextPage}
+              disabled={currentPage === totalPages}
+            />
+          </View>
+
           <View style={styles.packageListContainer}>
             <MyPackageList />
           </View>

@@ -4,9 +4,9 @@ export const getFarms = async () => {
   const response = await instance.get('/farms')
   return response.data?.data || []
 }
-export const getBlocksByFarm = async (farmID, page = 1, pageSize = 5) => {
+export const getBlocksByFarm = async (farmID, pageIndex = 1, pageSize = 5) => {
   const response = await instance.get(`/block-owner-users/${farmID}`, {
-    params: { page, pageSize },
+    params: { pageIndex, pageSize },
   })
   return response.data.data
 }

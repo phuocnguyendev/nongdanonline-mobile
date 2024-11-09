@@ -11,7 +11,7 @@ import {
 
 function MyFarmItem(props) {
   const [loading, setLoading] = useState(true)
-  const { hasAnimal, onPress, title, image, farmCode, navigation, blockData } =
+  const { hasAnimal, title, image, farmCode, navigation, blockData, farmID } =
     props
 
   return (
@@ -27,9 +27,9 @@ function MyFarmItem(props) {
         style={styles.plusButton}
         onPress={() => {
           if (hasAnimal) {
-            navigation?.navigate('AddPackageScreen', { blockData })
+            navigation?.navigate('AddPackageScreen', { blockData, farmID })
           } else {
-            navigation?.navigate('AddAnimalScreen', { blockData })
+            navigation?.navigate('AddAnimalScreen', { blockData, farmID })
           }
         }}
       >
@@ -63,9 +63,7 @@ function MyFarmItem(props) {
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.title}>{title}</Text>
-          <View style={styles.detailContainer}>
-            <Text style={styles.info}>{farmCode}</Text>
-          </View>
+          <View style={styles.detailContainer}></View>
         </View>
       </TouchableOpacity>
     </View>

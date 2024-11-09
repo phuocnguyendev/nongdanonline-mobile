@@ -16,8 +16,8 @@ import {
 } from '../../api/farm/index'
 
 export default function AddAnimalScreen({ route, navigation }) {
-  const { blockOwnerUserID, farmId, animalTypeId } = route.params
-
+  const { blockData, farmID } = route.params
+  const { blockOwnerUserID, animalTypeID } = blockData
   const [animalOptions, setAnimalOptions] = useState([])
   const [selectedAnimalId, setSelectedAnimalId] = useState(null)
   const [packageOptions, setPackageOptions] = useState([])
@@ -30,7 +30,7 @@ export default function AddAnimalScreen({ route, navigation }) {
   useEffect(() => {
     const fetchAnimals = async () => {
       try {
-        const animals = await getFarmAnimal(farmId, animalTypeId)
+        const animals = await getFarmAnimal(farmID, animalTypeID)
         const options = animals.map((animal) => ({
           label: animal.animalName,
           value: animal.animalID,
@@ -40,10 +40,10 @@ export default function AddAnimalScreen({ route, navigation }) {
         console.error('Error fetching animals:', error)
       }
     }
-    if (farmId && animalTypeId) {
+    if (farmID && animalTypeID) {
       fetchAnimals()
     }
-  }, [farmId, animalTypeId])
+  }, [farmID, animalTypeID])
 
   const handleSelectAnimal = useCallback(async (animalId) => {
     setSelectedAnimalId(animalId)
