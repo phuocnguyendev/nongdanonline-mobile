@@ -1,17 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Image,
+  Modal,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native'
+import { formattedDate } from '../../../utils/Format'
 
 const CarePackageScreen = ({ route, navigation }) => {
   const { animalData, blockData, animalOwnerUserId } = route.params
   const carePackages = animalData.userAnimalOwnerCares || []
-  console.log('animalOwnerUserId', animalOwnerUserId)
+  const [showDetailsModal, setShowDetailsModal] = useState(false)
+  const [selectedCarePackage, setSelectedCarePackage] = useState(null)
+
+  const handleShowDetails = (carePackage) => {
+    setSelectedCarePackage(carePackage)
+    setShowDetailsModal(true)
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -45,8 +53,43 @@ const CarePackageScreen = ({ route, navigation }) => {
           >
             <Text style={styles.addButtonText}>Thêm gói chăm sóc</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.detailsButton}
+            onPress={() => handleShowDetails(carePackage)}
+          >
+            <Text style={styles.detailsButtonText}>Xem chi tiết</Text>
+          </TouchableOpacity>
         </View>
       ))}
+
+      <Modal
+        visible={showDetailsModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowDetailsModal(false)}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>Chi tiết gói chăm sóc</Text>
+            <Text style={styles.modalText}>
+              <Text style={styles.modalLabel}>Ngày bắt đầu: </Text>
+              {formattedDate(selectedCarePackage?.startDate)}
+            </Text>
+            <Text style={styles.modalText}>
+              <Text style={styles.modalLabel}>Ngày kết thúc: </Text>
+              {formattedDate(selectedCarePackage?.endDate)}
+            </Text>
+
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => setShowDetailsModal(false)}
+            >
+              <Text style={styles.modalButtonText}>Đóng</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   )
 }
@@ -103,6 +146,58 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   addButtonText: {
+    fontSize: 16,
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  detailsButton: {
+    backgroundColor: '#FF6347',
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  detailsButtonText: {
+    fontSize: 16,
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContainer: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 8,
+    width: '80%',
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  modalLabel: {
+    fontWeight: 'bold',
+  },
+  modalButton: {
+    backgroundColor: '#00a86b',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  modalButtonText: {
     fontSize: 16,
     color: '#fff',
     fontWeight: 'bold',
