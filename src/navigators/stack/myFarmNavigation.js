@@ -8,6 +8,7 @@ import MainImageScreen from '../../screens/homeTab/MainImageScreen'
 import { MyFarm } from '../../screens/homeTab/MyFarm'
 import ShoppingCart from '../../screens/homeTab/ShoppingCart'
 import MyFarmEditNavigation from '../stack/myFarmEditNavigation'
+
 const Stack = createStackNavigator()
 
 export default function MyFarmNavigation({ navigation }) {
@@ -46,6 +47,16 @@ export default function MyFarmNavigation({ navigation }) {
         }}
       />
       <Stack.Screen
+        name="MainImageScreen"
+        component={MainImageScreen}
+        options={{
+          title: 'Chi tiết hình ảnh',
+          headerStyle: { backgroundColor: '#00a86b' },
+          headerTintColor: '#fff',
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
         name="My Farm Edit"
         component={MyFarmEditNavigation}
         options={{
@@ -77,16 +88,6 @@ export default function MyFarmNavigation({ navigation }) {
         component={AddPackageScreen}
         options={{
           title: 'Thêm gói mới',
-          headerStyle: { backgroundColor: '#00a86b' },
-          headerTintColor: '#fff',
-          headerTitleAlign: 'center',
-        }}
-      />
-      <Stack.Screen
-        name="MainImageScreen"
-        component={MainImageScreen}
-        options={{
-          title: 'Chi tiết hình ảnh',
           headerStyle: { backgroundColor: '#00a86b' },
           headerTintColor: '#fff',
           headerTitleAlign: 'center',

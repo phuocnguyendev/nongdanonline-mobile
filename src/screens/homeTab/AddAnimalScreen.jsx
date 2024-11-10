@@ -16,8 +16,8 @@ import {
 } from '../../api/farm/index'
 
 export default function AddAnimalScreen({ route, navigation }) {
-  const { blockOwnerUserID, farmId, animalTypeId } = route.params
-
+  const { blockData, farmID } = route.params
+  const { blockOwnerUserID, animalTypeID } = blockData
   const [animalOptions, setAnimalOptions] = useState([])
   const [selectedAnimalId, setSelectedAnimalId] = useState(null)
   const [packageOptions, setPackageOptions] = useState([])
@@ -30,7 +30,7 @@ export default function AddAnimalScreen({ route, navigation }) {
   useEffect(() => {
     const fetchAnimals = async () => {
       try {
-        const animals = await getFarmAnimal(farmId, animalTypeId)
+        const animals = await getFarmAnimal(farmID, animalTypeID)
         const options = animals.map((animal) => ({
           label: animal.animalName,
           value: animal.animalID,
@@ -40,10 +40,10 @@ export default function AddAnimalScreen({ route, navigation }) {
         console.error('Error fetching animals:', error)
       }
     }
-    if (farmId && animalTypeId) {
+    if (farmID && animalTypeID) {
       fetchAnimals()
     }
-  }, [farmId, animalTypeId])
+  }, [farmID, animalTypeID])
 
   const handleSelectAnimal = useCallback(async (animalId) => {
     setSelectedAnimalId(animalId)
@@ -74,13 +74,18 @@ export default function AddAnimalScreen({ route, navigation }) {
   }
 
   const handleAddAnimal = useCallback(async () => {
-    if (!selectedAnimalId || !selectedPackageId || !customAnimalName.trim()) {
+    const missingFields = []
+
+    if (!selectedAnimalId) missingFields.push('Động vật')
+    if (!selectedPackageId) missingFields.push('Gói chăm sóc')
+    if (!customAnimalName.trim()) missingFields.push('Tên tùy chỉnh')
+
+    if (missingFields.length > 0) {
       Alert.alert(
-        'Thông tin thiếu',
-        'Vui lòng chọn động vật, chọn gói chăm sóc và nhập tên tùy chỉnh trước khi thêm.',
+        'Thông tin không hợp lệ',
+        `Vui lòng nhập các trường còn thiếu: ${missingFields.join(', ')}`,
         [{ text: 'OK' }],
       )
-
       return
     }
 
@@ -114,9 +119,7 @@ export default function AddAnimalScreen({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Add Animal to Block {blockOwnerUserID}</Text>
-
-      <Text style={styles.label}>Select Animal</Text>
+      <Text style={styles.label}>Chọn động vật</Text>
       <DropDownPicker
         open={openAnimalDropdown}
         value={selectedAnimalId}
@@ -125,14 +128,14 @@ export default function AddAnimalScreen({ route, navigation }) {
         setValue={setSelectedAnimalId}
         setItems={setAnimalOptions}
         onChangeValue={(value) => handleSelectAnimal(value)}
-        placeholder="Choose an Animal"
+        placeholder="Chọn động vật có trong trang trại"
         style={styles.dropdown}
         dropDownContainerStyle={styles.dropdownContainer}
         zIndex={3000}
         zIndexInverse={1000}
       />
 
-      <Text style={styles.label}>Select Package</Text>
+      <Text style={styles.label}>Chọn gói chăm sóc</Text>
       <DropDownPicker
         open={openPackageDropdown}
         value={selectedPackageId}
@@ -141,7 +144,7 @@ export default function AddAnimalScreen({ route, navigation }) {
         setValue={setSelectedPackageId}
         setItems={setPackageOptions}
         onChangeValue={handleSelectPackage}
-        placeholder="Choose a Package"
+        placeholder="Chọn gói phù hợp"
         style={styles.dropdown}
         dropDownContainerStyle={styles.dropdownContainer}
         disabled={!selectedAnimalId}
@@ -156,16 +159,16 @@ export default function AddAnimalScreen({ route, navigation }) {
         </View>
       ) : null}
 
-      <Text style={styles.label}>Custom Animal Name</Text>
+      <Text style={styles.label}>Đặt tên động vật</Text>
       <TextInput
         style={[styles.input, customAnimalName ? styles.inputFilled : null]}
-        placeholder="Enter custom animal name"
+        placeholder="Nhập tên động vật"
         value={customAnimalName}
         onChangeText={setCustomAnimalName}
       />
 
       <TouchableOpacity style={styles.addButton} onPress={handleAddAnimal}>
-        <Text style={styles.buttonText}>Add Animal</Text>
+        <Text style={styles.buttonText}>Thêm động vật</Text>
       </TouchableOpacity>
     </View>
   )
@@ -185,7 +188,8 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginVertical: 10,
+    marginTop: 20,
+    marginBottom: 10,
   },
   dropdown: {
     backgroundColor: '#f0f0f0',
@@ -201,7 +205,7 @@ const styles = StyleSheet.create({
   packageDetailsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 10,
+    marginVertical: 20,
   },
   packageDetails: {
     fontSize: 14,

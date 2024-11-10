@@ -1,97 +1,96 @@
-import React, { useState, useMemo, useCallback, useEffect } from "react";
+import DateTimePicker from '@react-native-community/datetimepicker'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
-  View,
-  Text,
+  Button,
+  FlatList,
+  Modal,
+  Platform,
   StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
-  FlatList,
-  Platform,
-  Modal,
-  Button,
-} from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { Dropdown } from "react-native-element-dropdown";
-import InvoiceList from "../../../components/app/InvoiceList";
-import { INVOICES } from "../../../data/data-invoice";
+  View,
+} from 'react-native'
+import { Dropdown } from 'react-native-element-dropdown'
+import InvoiceList from '../../../components/app/InvoiceList'
 
 export function InvoiceInfo({ navigation }) {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [isSelectingStartDate, setIsSelectingStartDate] = useState(true);
-  const [selectedStatus, setSelectedStatus] = useState("Tất cả trạng thái");
-  const [searchKeyword, setSearchKeyword] = useState("");
-  const [filteredInvoices, setFilteredInvoices] = useState(INVOICES);
-  const [iosdate, setIosDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null)
+  const [endDate, setEndDate] = useState(null)
+  const [showDatePicker, setShowDatePicker] = useState(false)
+  const [isSelectingStartDate, setIsSelectingStartDate] = useState(true)
+  const [selectedStatus, setSelectedStatus] = useState('Tất cả trạng thái')
+  const [searchKeyword, setSearchKeyword] = useState('')
+  const [filteredInvoices, setFilteredInvoices] = useState(INVOICES)
+  const [iosdate, setIosDate] = useState(new Date())
 
   const handleSubmit = () => {
     setIosDate((prevDate) => {
-      isSelectingStartDate ? setStartDate(prevDate) : setEndDate(prevDate);
-      return prevDate;
-    });
-    setShowDatePicker(false);
-  };
+      isSelectingStartDate ? setStartDate(prevDate) : setEndDate(prevDate)
+      return prevDate
+    })
+    setShowDatePicker(false)
+  }
 
   const formatDate = (date) => {
-    if (!date) return "";
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  };
+    if (!date) return ''
+    const day = date.getDate().toString().padStart(2, '0')
+    const month = (date.getMonth() + 1).toString().padStart(2, '0')
+    const year = date.getFullYear()
+    return `${day}/${month}/${year}`
+  }
 
   const handleDateChange = (event, date) => {
-    if (event.type === "set" && date) {
-      isSelectingStartDate ? setStartDate(date) : setEndDate(date);
+    if (event.type === 'set' && date) {
+      isSelectingStartDate ? setStartDate(date) : setEndDate(date)
     }
-    setShowDatePicker(false);
-  };
+    setShowDatePicker(false)
+  }
 
   const data = useMemo(
     () => [
-      { label: "Tất cả trạng thái", value: "Tất cả trạng thái" },
-      { label: "Hoàn thành", value: "Hoàn thành" },
-      { label: "Đang xử lí", value: "Đang xử lí" },
-      { label: "Hủy", value: "Hủy" },
+      { label: 'Tất cả trạng thái', value: 'Tất cả trạng thái' },
+      { label: 'Hoàn thành', value: 'Hoàn thành' },
+      { label: 'Đang xử lí', value: 'Đang xử lí' },
+      { label: 'Hủy', value: 'Hủy' },
     ],
-    []
-  );
+    [],
+  )
 
   const filterInvoices = useCallback(() => {
     const filteredData = INVOICES.filter((invoice) => {
       const invoiceDate = new Date(
-        invoice.dateOrder.split("-").reverse().join("-")
-      );
+        invoice.dateOrder.split('-').reverse().join('-'),
+      )
       const statusMatch =
-        selectedStatus === "Tất cả trạng thái" ||
-        invoice.status === selectedStatus;
+        selectedStatus === 'Tất cả trạng thái' ||
+        invoice.status === selectedStatus
       const dateMatch =
         (!startDate || invoiceDate >= startDate) &&
-        (!endDate || invoiceDate <= endDate);
+        (!endDate || invoiceDate <= endDate)
       const keywordMatch =
-        !searchKeyword || invoice.invoiceId.toString().includes(searchKeyword);
+        !searchKeyword || invoice.invoiceId.toString().includes(searchKeyword)
 
-      return statusMatch && dateMatch && keywordMatch;
-    });
-    setFilteredInvoices(filteredData);
-  }, [selectedStatus, startDate, endDate, searchKeyword]);
+      return statusMatch && dateMatch && keywordMatch
+    })
+    setFilteredInvoices(filteredData)
+  }, [selectedStatus, startDate, endDate, searchKeyword])
 
   useEffect(() => {
-    filterInvoices();
-  }, [selectedStatus, startDate, endDate, searchKeyword]);
+    filterInvoices()
+  }, [selectedStatus, startDate, endDate, searchKeyword])
 
   const resetFilters = () => {
-    setStartDate(null);
-    setEndDate(null);
-    setSelectedStatus("Tất cả trạng thái");
-    setSearchKeyword("");
-    setFilteredInvoices(INVOICES);
-  };
+    setStartDate(null)
+    setEndDate(null)
+    setSelectedStatus('Tất cả trạng thái')
+    setSearchKeyword('')
+    setFilteredInvoices(INVOICES)
+  }
 
   const pressHandler = (invoiceId) => {
-    navigation.navigate("InvoiceDetail", { invoiceId });
-  };
+    navigation.navigate('InvoiceDetail', { invoiceId })
+  }
 
   const renderInvoiceList = ({ item }) => (
     <InvoiceList
@@ -102,7 +101,7 @@ export function InvoiceInfo({ navigation }) {
       invoiceDetail={item.invoiceDetail}
       onPress={pressHandler}
     />
-  );
+  )
 
   const renderHeader = useMemo(
     () => (
@@ -118,14 +117,14 @@ export function InvoiceInfo({ navigation }) {
           style={styles.dropdown}
         />
         <View style={styles.dateContainer}>
-          {["Chọn ngày bắt đầu", "Chọn ngày kết thúc"].map(
+          {['Chọn ngày bắt đầu', 'Chọn ngày kết thúc'].map(
             (placeholder, index) => (
               <TouchableOpacity
                 key={index}
                 style={index === 0 ? styles.touchable : styles.lastTouchable}
                 onPress={() => {
-                  setIsSelectingStartDate(index === 0);
-                  setShowDatePicker(true);
+                  setIsSelectingStartDate(index === 0)
+                  setShowDatePicker(true)
                 }}
               >
                 <TextInput
@@ -136,7 +135,7 @@ export function InvoiceInfo({ navigation }) {
                   pointerEvents="none"
                 />
               </TouchableOpacity>
-            )
+            ),
           )}
         </View>
 
@@ -153,14 +152,14 @@ export function InvoiceInfo({ navigation }) {
         </TouchableOpacity>
 
         {/* Modal cho iOS */}
-        {Platform.OS === "ios" && (
+        {Platform.OS === 'ios' && (
           <Modal
             visible={showDatePicker}
             transparent={true}
             animationType="slide"
           >
             <View style={styles.modalContainer}>
-              <View style={{ backgroundColor: "#fff" }}>
+              <View style={{ backgroundColor: '#fff' }}>
                 <DateTimePicker
                   value={
                     isSelectingStartDate
@@ -172,8 +171,8 @@ export function InvoiceInfo({ navigation }) {
                   display="spinner"
                   onChange={(event, date) => {
                     setIosDate((prevDate) => {
-                      return date;
-                    });
+                      return date
+                    })
                   }}
                 />
                 <View style={styles.buttonContainer}>
@@ -194,7 +193,7 @@ export function InvoiceInfo({ navigation }) {
         )}
 
         {/* DateTimePicker cho Android */}
-        {Platform.OS === "android" && showDatePicker && (
+        {Platform.OS === 'android' && showDatePicker && (
           <DateTimePicker
             value={
               isSelectingStartDate
@@ -204,7 +203,7 @@ export function InvoiceInfo({ navigation }) {
             mode="date"
             display="spinner"
             onChange={(event, date) => {
-              handleDateChange(event, date);
+              handleDateChange(event, date)
             }}
           />
         )}
@@ -218,8 +217,8 @@ export function InvoiceInfo({ navigation }) {
       data,
       showDatePicker,
       isSelectingStartDate,
-    ]
-  );
+    ],
+  )
 
   return (
     <View>
@@ -230,41 +229,41 @@ export function InvoiceInfo({ navigation }) {
         ListHeaderComponent={renderHeader}
       />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   header: {
     fontSize: 24,
-    color: "#00a86b",
-    fontWeight: "bold",
+    color: '#00a86b',
+    fontWeight: 'bold',
     marginBottom: 20,
-    textAlign: "center",
+    textAlign: 'center',
   },
   formContainer: {
     padding: 20,
   },
   dropdown: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     marginTop: 10,
     marginBottom: 30,
     borderRadius: 5,
     padding: 10,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   dateContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
     marginBottom: 30,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     flex: 1,
   },
   touchable: {
@@ -275,24 +274,24 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   resetButton: {
-    backgroundColor: "#00a86b",
+    backgroundColor: '#00a86b',
     padding: 10,
     borderRadius: 5,
-    alignItems: "center",
+    alignItems: 'center',
   },
   resetButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
+    color: '#fff',
+    fontWeight: 'bold',
   },
   modalContainer: {
     flex: 1,
-    justifyContent: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
     marginTop: 20,
     marginBottom: 15,
   },
-});
+})

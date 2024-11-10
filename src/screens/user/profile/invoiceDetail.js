@@ -1,36 +1,34 @@
+import React from 'react'
 import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
   ScrollView,
-} from "react-native";
-import React from "react";
-import { INVOICES } from "../../../data/data-invoice";
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 
 export function InvoiceDetail({ navigation, route }) {
-  const { invoiceId } = route.params;
+  const { invoiceId } = route.params
 
-  const invoice = INVOICES.find((inv) => inv.invoiceId === invoiceId);
+  const invoice = INVOICES.find((inv) => inv.invoiceId === invoiceId)
 
   if (!invoice) {
     return (
       <View style={styles.container}>
-        <Text style={{ textAlign: "center", marginVertical: 10, color: "red" }}>
+        <Text style={{ textAlign: 'center', marginVertical: 10, color: 'red' }}>
           Đơn hàng không tồn tại hoặc đã bị xóa
         </Text>
       </View>
-    );
+    )
   }
 
   // Fake data for transaction info
   const transactionInfo = {
-    transactionId: "TRANSATION-9C36B127",
-    transactionDate: "2024-10-17",
-    amount: "500.000 ₫",
-    paymentMethod: "PayOS",
-  };
+    transactionId: 'TRANSATION-9C36B127',
+    transactionDate: '2024-10-17',
+    amount: '500.000 ₫',
+    paymentMethod: 'PayOS',
+  }
 
   const renderInvoiceHeader = () => (
     <View>
@@ -42,14 +40,14 @@ export function InvoiceDetail({ navigation, route }) {
         </Text>
         <Text style={styles.cardText}>Tổng tiền: </Text>
         <Text
-          style={[styles.cardText, { fontWeight: "bold", color: "#1d4ed8" }]}
+          style={[styles.cardText, { fontWeight: 'bold', color: '#1d4ed8' }]}
         >
           {invoice.totalPrice}
         </Text>
       </View>
       <Text style={styles.subHeader}>Chi tiết sản phẩm:</Text>
     </View>
-  );
+  )
 
   const renderProductTable = () => (
     <View>
@@ -73,7 +71,7 @@ export function InvoiceDetail({ navigation, route }) {
         </View>
       ))}
     </View>
-  );
+  )
 
   // Render transaction details table
   const renderTransactionTable = () => (
@@ -88,11 +86,11 @@ export function InvoiceDetail({ navigation, route }) {
         Phương thức thanh toán: {transactionInfo.paymentMethod}
       </Text>
       <Text style={styles.cardText}>Số tiền: </Text>
-      <Text style={[styles.cardText, { fontWeight: "bold", color: "#1d4ed8" }]}>
+      <Text style={[styles.cardText, { fontWeight: 'bold', color: '#1d4ed8' }]}>
         {transactionInfo.amount}
       </Text>
     </View>
-  );
+  )
 
   return (
     <ScrollView>
@@ -105,28 +103,28 @@ export function InvoiceDetail({ navigation, route }) {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Text style={{ fontWeight: "bold", color: "white", fontSize: 18 }}>
+          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 18 }}>
             Trở về
           </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     margin: 20,
     borderRadius: 10,
     elevation: 6,
   },
   card: {
     borderRadius: 20,
-    backgroundColor: "#d4edda",
+    backgroundColor: '#d4edda',
     padding: 15,
-    borderLeftColor: "#00a86b",
+    borderLeftColor: '#00a86b',
     borderLeftWidth: 7,
     marginVertical: 10,
   },
@@ -135,86 +133,86 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     paddingBottom: 10,
     borderBottomWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     marginBottom: 10,
   },
   invoiceId: {
     fontSize: 20,
-    color: "#00a86b",
-    fontWeight: "bold",
+    color: '#00a86b',
+    fontWeight: 'bold',
     marginVertical: 10,
   },
   subHeader: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginVertical: 20,
   },
   productImage: {
     width: 100,
     height: 100,
-    backgroundColor: "#ccc",
+    backgroundColor: '#ccc',
     borderRadius: 5,
     marginRight: 10,
   },
   backButton: {
     marginTop: 20,
     padding: 12,
-    backgroundColor: "#00a86b",
+    backgroundColor: '#00a86b',
     borderRadius: 5,
-    alignItems: "center",
+    alignItems: 'center',
   },
   productCard: {
     marginVertical: 10,
     paddingVertical: 20,
     paddingHorizontal: 15,
     borderWidth: 2,
-    borderColor: "#00a86b",
+    borderColor: '#00a86b',
     borderRadius: 15,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   detailProduct: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   productContent: {
-    justifyContent: "space-around",
+    justifyContent: 'space-around',
     flex: 1,
   },
   productName: {
     fontSize: 20,
-    fontWeight: "bold",
-    color: "#00a86b",
+    fontWeight: 'bold',
+    color: '#00a86b',
   },
   productText: {
     fontSize: 16,
   },
   priceContainer: {
-    alignItems: "flex-end",
+    alignItems: 'flex-end',
     marginTop: 5,
   },
   productPrice: {
-    color: "#00a86b",
+    color: '#00a86b',
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginTop: 5,
   },
   cardTransaction: {
     borderRadius: 20,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     padding: 15,
-    borderColor: "#00a86b",
+    borderColor: '#00a86b',
     borderLeftWidth: 7,
     borderRightWidth: 7,
     borderWidth: 3,
     marginVertical: 10,
   },
   transactionId: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 20,
-    color: "#00a86b",
-    fontWeight: "bold",
+    color: '#00a86b',
+    fontWeight: 'bold',
     marginVertical: 10,
   },
-});
+})
