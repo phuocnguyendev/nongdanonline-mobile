@@ -1,19 +1,23 @@
-import { TouchableOpacity } from "react-native";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import AddAddressModal from "../../../components/app/AddAddressModal";
-import React, { useState } from "react";
+import { Ionicons } from '@expo/vector-icons'
+import React, { useState } from 'react'
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 
 export function Address({ navigation }) {
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false)
 
   const openModal = () => {
-    setModalVisible(true);
-  };
+    setModalVisible(true)
+  }
 
   const closeModal = () => {
-    setModalVisible(false);
-  };
+    setModalVisible(false)
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -29,54 +33,54 @@ export function Address({ navigation }) {
         )}
       </View>
     </ScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     padding: 20,
-    backgroundColor: "#f4f4f4",
+    backgroundColor: '#f4f4f4',
   },
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 10,
     padding: 20,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 10,
     elevation: 5,
-    alignItems: "center",
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 20,
-    color: "#333",
-    textAlign: "center",
+    color: '#333',
+    textAlign: 'center',
   },
   addButton: {
-    backgroundColor: "#1d4ed8",
+    backgroundColor: '#1d4ed8',
     borderRadius: 10,
     paddingVertical: 12,
     paddingHorizontal: 20,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginVertical: 15,
   },
   buttonText: {
     fontSize: 16,
-    color: "#fff",
-    fontWeight: "bold",
+    color: '#fff',
+    fontWeight: 'bold',
     marginLeft: 10,
   },
   noAddressText: {
     fontSize: 18,
-    fontWeight: "bold",
-    color: "#555",
+    fontWeight: 'bold',
+    color: '#555',
     marginTop: 20,
-    textAlign: "center",
+    textAlign: 'center',
   },
-});
+})

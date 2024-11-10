@@ -1,7 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react' // Remove useState import
 import IconButton from '../../components/ui/IconButton'
-import { MyFarmEdit } from '../../screens/homeTab/myFarmHome'
 
 const Stack = createStackNavigator()
 
