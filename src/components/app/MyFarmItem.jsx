@@ -1,61 +1,90 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import {
   ActivityIndicator,
   Image,
+  Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native'
+import InfoScreen from '../../screens/homeTab/InfoScreen'
 
 function MyFarmItem(props) {
   const [loading, setLoading] = useState(true)
-  const { hasAnimal, title, image, farmCode, navigation, blockData, farmID } =
+  const [modalVisible, setModalVisible] = useState(false)
+  const { hasAnimal, title, image, blockData, farmID, animalID, navigation } =
     props
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.infoButton}
-        onPress={() => navigation?.navigate('InfoScreen', { title })}
+        onPress={() => setModalVisible(true)}
       >
         <Ionicons name="information-circle" size={24} color="#007aff" />
       </TouchableOpacity>
+
+      <Modal
+        transparent={true}
+        animationType="slide"
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setModalVisible(false)}
+            >
+              <Ionicons name="close-circle" size={28} color="#555" />
+            </TouchableOpacity>
+            <InfoScreen blockData={blockData} />
+          </View>
+        </View>
+      </Modal>
 
       <TouchableOpacity
         style={styles.plusButton}
         onPress={() => {
           if (hasAnimal) {
-            navigation?.navigate('AddPackageScreen', { blockData, farmID })
+            navigation?.navigate('AddPackageScreen', { animalID, blockData })
           } else {
             navigation?.navigate('AddAnimalScreen', { blockData, farmID })
           }
         }}
       >
-        {hasAnimal ? (
-          <Ionicons name="gift-outline" size={24} color="#007aff" />
-        ) : (
-          <Ionicons name="add-circle-outline" size={24} color="#007aff" />
-        )}
+        <Ionicons
+          name={hasAnimal ? 'gift-outline' : 'add-circle-outline'}
+          size={24}
+          color="#007aff"
+        />
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => navigation?.navigate('MainImageScreen', { title })}
+        onPress={() => {
+          if (hasAnimal) {
+            navigation?.navigate('MainImageScreen', {
+              title,
+              blockData,
+              animalID,
+            })
+          } else {
+            navigation?.navigate('AddAnimalScreen', { blockData, farmID })
+          }
+        }}
       >
         <View style={styles.imageContainer}>
           {loading && (
             <ActivityIndicator
               size="large"
               color="#00a86b"
-              style={[
-                styles.image,
-                { justifyContent: 'center', alignItems: 'center' },
-              ]}
+              style={styles.image}
             />
           )}
           <Image
-            source={image ? { uri: image } : ''}
+            source={image ? { uri: image } : null}
             style={styles.image}
             onLoad={() => setLoading(false)}
             onError={() => setLoading(false)}
@@ -63,7 +92,6 @@ function MyFarmItem(props) {
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.title}>{title}</Text>
-          <View style={styles.detailContainer}></View>
         </View>
       </TouchableOpacity>
     </View>
@@ -96,31 +124,14 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  noImageText: {
-    textAlign: 'center',
-    fontSize: 16,
-    color: 'gray',
-    marginTop: 80,
-  },
   infoContainer: {
     flex: 1,
     marginVertical: 10,
-  },
-  info: {
-    fontSize: 15,
-    color: 'black',
-    marginTop: 5,
-    marginLeft: 5,
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
     color: 'green',
-  },
-  detailContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 5,
   },
   infoButton: {
     position: 'absolute',
@@ -134,9 +145,23 @@ const styles = StyleSheet.create({
     right: 10,
     zIndex: 10,
   },
-  addPackageText: {
-    color: '#007aff',
-    fontSize: 14,
-    fontWeight: 'bold',
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: '90%',
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    position: 'relative', // To position the close button
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
   },
 })

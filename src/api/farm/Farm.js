@@ -63,3 +63,27 @@ export const addAnimalToFarm = async (data) => {
     throw error
   }
 }
+export const addPackage = async (data) => {
+  try {
+    const response = await instance.patch('/user-animal-owner-care', data)
+    return response.data
+  } catch (error) {
+    if (error.response) {
+      console.error('Error adding package:', error.response.data)
+    } else {
+      console.error('Error adding package:', error)
+    }
+    throw error
+  }
+}
+export const getAnimalDetails = async (animalOwnerUserId) => {
+  try {
+    const response = await instance.get(
+      `/block-owner-users/details/${animalOwnerUserId}`,
+    )
+    return response.data?.data || {}
+  } catch (error) {
+    console.error('Error fetching animal details:', error)
+    return {}
+  }
+}

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 function Pagination({ currentPage, totalPages, onPreviousPage, onNextPage }) {
   return (
@@ -23,28 +23,21 @@ function Pagination({ currentPage, totalPages, onPreviousPage, onNextPage }) {
         <Text style={styles.paginationText}>Trang sau</Text>
       </TouchableOpacity>
     </View>
-  );
+  )
 }
 
-export default Pagination;
+export default Pagination
 
 const styles = StyleSheet.create({
   paginationContainer: {
-    position: "absolute", // Fix position
-    bottom: 0, // Stick to the bottom
-    left: 0,
-    right: 0,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 20,
-    backgroundColor: "#fff", // Make sure pagination stays visible
-    borderTopWidth: 1,
-    borderTopColor: "#ddd",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 10,
   },
   paginationButton: {
     padding: 10,
-    backgroundColor: "#d0d0d0",
+    backgroundColor: '#d0d0d0',
     borderRadius: 5,
   },
   paginationText: {
@@ -53,4 +46,4 @@ const styles = StyleSheet.create({
   paginationInfo: {
     fontSize: 16,
   },
-});
+})

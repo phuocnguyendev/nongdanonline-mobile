@@ -54,9 +54,9 @@ function MyPackageList() {
               />
               <View style={styles.info}>
                 <Text style={styles.title}>{item.carePackageName}</Text>
-                <Text style={styles.price}>Price: {item.myPackagePrice}</Text>
-                <Text>Stock: {item.stock}</Text>
-                <Text>Duration: {item.timeUseByDay} days</Text>
+                <Text style={styles.price}>Giá: {item.myPackagePrice}</Text>
+                <Text>Tồn kho: {item.stock}</Text>
+                <Text>Thời gian sử dụng: {item.timeUseByDay} ngày</Text>
               </View>
             </View>
           )}
