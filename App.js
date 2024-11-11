@@ -1,6 +1,7 @@
 import React from 'react'
 import { I18nextProvider } from 'react-i18next'
 import { StatusBar } from 'react-native'
+import 'react-native-get-random-values'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import i18n from './src/i8n/i8n'

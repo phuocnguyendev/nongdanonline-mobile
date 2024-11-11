@@ -1,17 +1,16 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
-// import { CartProvider } from '../reducers/CartContext'
+import Camera from '../screens/homeTab/InfoAnimal/Camera'
+import Sensor from '../screens/homeTab/InfoAnimal/Sensor'
 import DrawerNavigation from './drawer/drawerNavigation'
 import ListFarmNavigation from './stack/listFarmNavigation'
 import LoginNavigation from './stack/loginNavigation'
-
 const Stack = createStackNavigator()
 
 export function Navigator() {
   return (
     <NavigationContainer>
-      {/* <CartProvider> */}
       <Stack.Navigator screenOptions={{ headerBackTitleVisible: false }}>
         <Stack.Screen
           name={'Login Navigation'}
@@ -28,23 +27,18 @@ export function Navigator() {
           component={ListFarmNavigation}
           options={{ headerShown: false }}
         />
-        {/* <Stack.Screen
-            name={ShoppingCart}
-            component={ShoppingCart}
-            options={{
-              title: 'Giỏ hàng',
-              headerStyle: {
-                backgroundColor: '#00a86b',
-              },
-              headerTintColor: '#fff',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-              headerTitleAlign: 'center',
-            }}
-          /> */}
+        <Stack.Screen name={'Camera'} component={Camera} />
+        <Stack.Screen
+          name={'Sensor'}
+          component={Sensor}
+          options={{
+            title: 'Dữ liệu cảm biến',
+            headerStyle: { backgroundColor: '#00a86b' },
+            headerTintColor: '#fff',
+            headerTitleAlign: 'center',
+          }}
+        />
       </Stack.Navigator>
-      {/* </CartProvider> */}
     </NavigationContainer>
   )
 }
