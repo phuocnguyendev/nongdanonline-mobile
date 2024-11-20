@@ -4,7 +4,7 @@ import { getFarms } from '../../api/farm/index'
 import FarmItem from '../../components/app/FarmItem'
 import { EmptyPage } from '../emptyView'
 
-export function FarmList({ navigation }) {
+export const FarmList = ({ navigation }) => {
   const [farms, setFarms] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -25,14 +25,9 @@ export function FarmList({ navigation }) {
     fetchFarms()
   }, [])
 
-  function pressHandler(title, image, farmOwner, phone, farmArea, mapLink) {
+  const pressHandler = (initialFarmData) => {
     navigation.navigate('AboutFarm Navigation', {
-      title,
-      image,
-      farmOwner,
-      phone,
-      farmArea,
-      mapLink,
+      initialFarmData,
     })
   }
 
@@ -53,27 +48,17 @@ export function FarmList({ navigation }) {
     return <EmptyPage />
   }
 
-  function renderFarmItem({ item }) {
-    return (
-      <FarmItem
-        image={item.farmImages[0]?.imagesUrl}
-        title={item.farmName}
-        description={item.farmDescription}
-        mapLink={item.mapLink}
-        phone={item.ownerPhone}
-        onPress={() =>
-          pressHandler(
-            item.farmName,
-            item.farmImages[0]?.imagesUrl,
-            item.farmOwner,
-            item.ownerPhone,
-            item.farmArea,
-            item.mapLink,
-          )
-        }
-      />
-    )
-  }
+  const renderFarmItem = ({ item }) => (
+    <FarmItem
+      image={item.farmImages[0]?.imagesUrl}
+      title={item.farmName}
+      description={item.farmDescription}
+      mapLink={item.mapLink}
+      phone={item.ownerPhone}
+      farmID={item.farmID}
+      onPress={() => pressHandler(item)}
+    />
+  )
 
   return (
     <FlatList

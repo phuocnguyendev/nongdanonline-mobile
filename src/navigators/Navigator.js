@@ -1,11 +1,13 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
+import Checkout from '../screens/homeTab/Checkout'
 import Camera from '../screens/homeTab/InfoAnimal/Camera'
 import Sensor from '../screens/homeTab/InfoAnimal/Sensor'
 import DrawerNavigation from './drawer/drawerNavigation'
 import ListFarmNavigation from './stack/listFarmNavigation'
 import LoginNavigation from './stack/loginNavigation'
+
 const Stack = createStackNavigator()
 
 export function Navigator() {
@@ -33,6 +35,16 @@ export function Navigator() {
           component={Sensor}
           options={{
             title: 'Dữ liệu cảm biến',
+            headerStyle: { backgroundColor: '#00a86b' },
+            headerTintColor: '#fff',
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={'Checkout'}
+          component={Checkout}
+          options={{
+            title: 'Thanh Toán',
             headerStyle: { backgroundColor: '#00a86b' },
             headerTintColor: '#fff',
             headerTitleAlign: 'center',
