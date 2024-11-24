@@ -2,8 +2,6 @@ import { Ionicons } from '@expo/vector-icons'
 import { Pressable, StyleSheet, View } from 'react-native'
 
 function IconButton({ icon, color, onPress }) {
-  // const { cart } = useContext(CartContext);
-
   return (
     <Pressable
       onPress={onPress}
@@ -11,11 +9,6 @@ function IconButton({ icon, color, onPress }) {
     >
       <View style={styles.iconContainer}>
         <Ionicons name={icon} size={24} color={color} />
-        {/* {cart.length > 0 && ( */}
-        <View style={styles.badgeContainer}>
-          {/* <Text style={styles.badgeText}>{cart.length}</Text> */}
-        </View>
-        {/* )} */}
       </View>
     </Pressable>
   )
@@ -35,21 +28,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'green',
     backgroundColor: '#f6f6f6',
-  },
-  badgeContainer: {
-    position: 'absolute',
-    right: -10,
-    top: -5,
-    backgroundColor: 'red',
-    borderRadius: 10,
-    width: 20,
-    height: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  badgeText: {
-    color: 'white',
-    fontSize: 12,
-    fontWeight: 'bold',
   },
 })

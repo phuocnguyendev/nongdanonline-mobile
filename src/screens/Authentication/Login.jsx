@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useAuthRequest } from 'expo-auth-session/providers/google'
 import { Formik } from 'formik'
 import { jwtDecode } from 'jwt-decode'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Alert,
   Dimensions,
@@ -25,7 +26,6 @@ import InputField from '../../components/ui/InputField/InputField'
 import useTranslationSwitcher from '../../hooks/useTranslationSwitcher'
 import { setUser } from '../../store/userSlice'
 import getLoginValidationSchema from '../../validation/LoginValidation'
-
 export function Login({ navigation }) {
   const { t } = useTranslationSwitcher()
   const dispatch = useDispatch()
@@ -35,6 +35,15 @@ export function Login({ navigation }) {
   const toggleCheckbox = () => setChecked(!checked)
   const dismissKeyboard = () => Keyboard.dismiss()
   const validation = getLoginValidationSchema(t)
+
+  const [request, response, promptAsync] = useAuthRequest({
+    expoClientId:
+      '1009243729166-lp1qqum2qoe54e4ol4vgtorchqh0ka51.apps.googleusercontent.com',
+    iosClientId:
+      '1009243729166-1la6q67j4377bdv8mm01rgihgv9dhc15.apps.googleusercontent.com',
+    androidClientId: 'YOUR_ANDROID_CLIENT_ID.apps.googleusercontent.com',
+  })
+
   const loginApple = () => {
     Alert.alert(t('login.appleSignInMessage'), '', [{ text: t('login.ok') }])
   }
@@ -68,6 +77,63 @@ export function Login({ navigation }) {
     }
   }
 
+  const handleGoogleLoginSuccess = async (token) => {
+    try {
+      // Fetch user information from Google
+      const userInfoResponse = await fetch(
+        'https://www.googleapis.com/oauth2/v3/userinfo',
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
+
+      // Check if the response is valid
+      if (!userInfoResponse.ok) {
+        throw new Error('Failed to fetch user info from Google')
+      }
+
+      const userInfo = await userInfoResponse.json()
+
+      // Extract user details
+      const { email, name, picture: avatar } = userInfo
+
+      // Create user object
+      const user = {
+        email,
+        name,
+        avatar,
+        role: 'User', // Default role, update as needed
+      }
+
+      // Store access token and user info in AsyncStorage
+      await AsyncStorage.setItem('accessToken', token)
+      await AsyncStorage.setItem('userInfo', JSON.stringify(user))
+
+      // Update Redux state
+      dispatch(setUser(user))
+
+      // Show success message
+      Alert.alert('Login Successful', `Welcome, ${name}`)
+
+      // Navigate to the main screen
+      navigation.navigate('Main Screen')
+    } catch (error) {
+      console.error('Google Login Error:', error)
+
+      // Show error message
+      Alert.alert(
+        'Login Failed',
+        'Unable to log in with Google. Please try again.',
+      )
+    }
+  }
+
+  useEffect(() => {
+    if (response?.type === 'success') {
+      const { access_token } = response.authentication
+      handleGoogleLoginSuccess(access_token)
+    }
+  }, [response])
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -171,7 +237,7 @@ export function Login({ navigation }) {
               </View>
 
               <SocialLoginButton
-                onPress={handleLogin}
+                onPress={() => promptAsync()}
                 icon={require('../../assets/google.png')}
                 title={t('login.signInWithGoogle')}
               />

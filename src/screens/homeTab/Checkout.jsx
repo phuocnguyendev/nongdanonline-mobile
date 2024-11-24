@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useNavigation } from '@react-navigation/native'
 import { jwtDecode } from 'jwt-decode'
 import React, { useEffect, useState } from 'react'
 import {
@@ -9,12 +10,16 @@ import {
   View,
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import { BuyItem } from '../../api/payment/payment'
+import { clearCart } from '../../store/cartSlice'
 function CheckoutScreen({ route }) {
   const { cartItems = [], totalAmount = 0 } = route.params || {}
   const [userId, setUserId] = useState(null)
-  const [selectedOption, setSelectedOption] = useState('vnpay')
+  const [isLoading, setIsLoading] = useState(false)
+  const [qrCode, setQrCode] = useState(null)
   const selectFarmID = (state) => state.cart.farmID
   const farmID = useSelector(selectFarmID)
+  const navigation = useNavigation()
   const dispatch = useDispatch()
   useEffect(() => {
     const fetchData = async () => {
@@ -31,31 +36,62 @@ function CheckoutScreen({ route }) {
     fetchData()
   }, [])
 
-  const paymentData = {
-    amount: totalAmount,
-    userId: userId,
-    paymentMethod: selectedOption === 'vnpay' ? 0 : 2,
-    paymentType: 0,
-    farmID: farmID,
-    listBlocks: cartItems
-      .filter((item) => item.type === 'block')
-      .map((item) => ({
-        blockID: item.id,
-        quantityBlock: item.quantity,
-        quantityMonth: item.quantityMonth || 1,
-      })),
-    listCPs: cartItems
-      .filter((item) => item.type === 'carePackage')
-      .map((item) => ({
-        carePackageID: item.id,
-        quantity: item.quantity,
-      })),
+  // Function to build the payment data
+  const buildPaymentData = (cartItems, totalAmount, userId, farmID) => {
+    const paymentData = {
+      amount: totalAmount,
+      userId: userId,
+      paymentMethod: 2, // Assuming 2 is for PayOS
+      paymentType: 0,
+      farmID: farmID,
+      listBlocks: cartItems
+        .filter((item) => item.type === 'block')
+        .map((item) => ({
+          blockID: item.id,
+          quantityBlock: item.quantity,
+          quantityMonth: item.quantityMonth || 1,
+        })),
+      listCPs: cartItems
+        .filter((item) => item.type === 'carePackage')
+        .map((item) => ({
+          carePackageID: item.id,
+          quantity: item.quantity,
+        })),
+    }
+    return paymentData
   }
-  // console.log('Processing Payment:', paymentData)
 
-  const handlePayment = () => {
-    console.log('Processing Payment with Data:', paymentData)
-    // You can now send `paymentData` to your backend
+  const handlePayment = async () => {
+    if (!userId || !farmID) {
+      alert('Vui lòng đăng nhập và chọn nông trại để thanh toán')
+      return
+    }
+
+    setIsLoading(true)
+    const paymentData = buildPaymentData(cartItems, totalAmount, userId, farmID)
+
+    try {
+      const response = await BuyItem(paymentData, paymentData.paymentMethod)
+
+      if (response.status === 200) {
+        const { data } = response
+
+        if (data?.url?.data?.qrCode) {
+          setQrCode(data?.url?.data?.qrCode)
+          navigation.navigate('QRCodeScreen', {
+            qrCode: data?.url?.data?.qrCode,
+          })
+        }
+        dispatch(clearCart())
+      } else {
+        alert('Thanh toán thất bại, vui lòng thử lại.')
+      }
+    } catch (error) {
+      console.error('Error with payment request:', error)
+      alert('Thanh toán thất bại, vui lòng thử lại.')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -104,9 +140,11 @@ function CheckoutScreen({ route }) {
               {totalAmount.toLocaleString('vi-VN')} VND
             </Text>
           </View>
+
           <TouchableOpacity
             style={styles.paymentButton}
             onPress={handlePayment}
+            disabled={isLoading}
           >
             <Text style={styles.paymentText}>Xác Nhận Thanh Toán</Text>
           </TouchableOpacity>
@@ -203,34 +241,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  quantityMonthControl: {
-    flexDirection: 'row',
+  qrCodeContainer: {
     alignItems: 'center',
-    marginTop: 10,
+    marginVertical: 20,
   },
-  quantityMonthLabel: {
-    fontSize: 14,
-    color: '#555',
-    marginRight: 10,
-  },
-  quantityMonth: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-    marginHorizontal: 10,
-  },
-  quantityButton: {
-    width: 30,
-    height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ddd',
-    borderRadius: 5,
-  },
-  quantityButtonText: {
+  qrCodeText: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
+    marginBottom: 10,
   },
 })
 

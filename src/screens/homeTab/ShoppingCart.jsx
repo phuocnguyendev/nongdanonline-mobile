@@ -25,7 +25,11 @@ export default function ShoppingCart({ navigation }) {
   return (
     <View style={styles.container}>
       {cartItems.length === 0 ? (
-        <Text style={styles.emptyCartText}>Giỏ hàng của bạn trống!</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <Text style={styles.emptyCartText}>
+            Giỏ hàng của bạn trống! Quay về danh sách nông trại
+          </Text>
+        </TouchableOpacity>
       ) : (
         <>
           <ScrollView style={styles.scrollContainer}>

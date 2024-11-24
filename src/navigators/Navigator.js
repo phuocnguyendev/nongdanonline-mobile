@@ -4,10 +4,13 @@ import React from 'react'
 import Checkout from '../screens/homeTab/Checkout'
 import Camera from '../screens/homeTab/InfoAnimal/Camera'
 import Sensor from '../screens/homeTab/InfoAnimal/Sensor'
+import QRCodeScreen from '../screens/homeTab/QRCodeScreen'
+import ShoppingCart from '../screens/homeTab/ShoppingCart'
+import AddressScreenCreate from '../screens/user/profile/AddressScreenCreate'
+import UpdateAddressPopup from '../screens/user/profile/UpdateAddressPopup'
 import DrawerNavigation from './drawer/drawerNavigation'
 import ListFarmNavigation from './stack/listFarmNavigation'
 import LoginNavigation from './stack/loginNavigation'
-
 const Stack = createStackNavigator()
 
 export function Navigator() {
@@ -50,6 +53,27 @@ export function Navigator() {
             headerTitleAlign: 'center',
           }}
         />
+        <Stack.Screen
+          name="ShoppingCart"
+          component={ShoppingCart}
+          options={{
+            title: 'Giỏ hàng',
+            headerStyle: { backgroundColor: '#00a86b' },
+            headerTintColor: '#fff',
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name="AddAddress"
+          component={AddressScreenCreate}
+          options={{ title: 'Thêm địa chỉ' }}
+        />
+        <Stack.Screen
+          name="UpdateAddress"
+          component={UpdateAddressPopup}
+          options={{ title: 'Cập nhật địa chỉ' }}
+        />
+        <Stack.Screen name="QRCodeScreen" component={QRCodeScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )

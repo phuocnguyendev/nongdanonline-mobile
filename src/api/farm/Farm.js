@@ -96,3 +96,6 @@ export const getAnimalDetails = async (animalOwnerUserId) => {
     return {}
   }
 }
+export const myFarm = async (data) => {
+  return await instance.get(`/block-owner-users/my-farm`, data)
+}
