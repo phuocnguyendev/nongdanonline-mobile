@@ -1,4 +1,10 @@
+import {
+  HttpTransportType,
+  HubConnectionBuilder,
+  LogLevel,
+} from '@microsoft/signalr'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as Notifications from 'expo-notifications'
 import { jwtDecode } from 'jwt-decode'
 import React, { useEffect, useState } from 'react'
 import {
@@ -10,16 +16,20 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { fetchNotificationsAPI } from '../../api/noti/notìication'
+import { fetchNotificationsAPI } from '../../api/noti/notìication' // API lấy thông báo từ server
 
 export const NotificationScreen = () => {
   const [notifications, setNotifications] = useState([])
   const [loading, setLoading] = useState(true)
+  const [connection, setConnection] = useState(null)
 
   useEffect(() => {
     fetchNotifications()
+    setupSignalRConnection()
+    registerForPushNotificationsAsync()
   }, [])
 
+  // Lấy thông báo từ API
   const fetchNotifications = async () => {
     setLoading(true)
     try {
@@ -52,28 +62,93 @@ export const NotificationScreen = () => {
     }
   }
 
+  const setupSignalRConnection = async () => {
+    try {
+      const token = await AsyncStorage.getItem('accessToken')
+      if (!token) {
+        console.error('No token found')
+        return
+      }
+
+      const decodedToken = jwtDecode(token)
+      const userId = decodedToken?.id
+      if (!userId) {
+        console.error('Invalid token. UserID not found.')
+        return
+      }
+
+      const newConnection = new HubConnectionBuilder()
+        .withUrl(process.env.VITE_NOTIFICATION_URL, {
+          accessTokenFactory: () => token,
+          skipNegotiation: false,
+          transport: HttpTransportType.WebSockets,
+        })
+        .configureLogging(LogLevel.Debug)
+        .withAutomaticReconnect([0, 2000, 5000, 10000, 30000])
+        .build()
+
+      newConnection.onclose((err) => {
+        console.error('SignalR connection closed:', err)
+      })
+
+      newConnection.onreconnecting((err) => {
+        console.warn('SignalR is reconnecting...', err)
+      })
+
+      newConnection.onreconnected((connectionId) => {
+        console.log('SignalR reconnected. Connection ID:', connectionId)
+      })
+
+      newConnection.on('ReceiveNotification', (notiDto) => {
+        if (notiDto && notiDto.title && notiDto.message) {
+          setNotifications((prev) => [notiDto, ...prev])
+
+          Notifications.scheduleNotificationAsync({
+            content: {
+              title: notiDto.title,
+              body: notiDto.message,
+            },
+            trigger: null,
+          })
+        } else {
+          console.error('Invalid notification structure:', notiDto)
+        }
+      })
+
+      await newConnection.start()
+      console.log('SignalR Connected!')
+      setConnection(newConnection)
+    } catch (error) {
+      console.error('Error setting up SignalR connection:', error)
+    }
+  }
+
+  const registerForPushNotificationsAsync = async () => {
+    try {
+      const { status } = await Notifications.requestPermissionsAsync()
+      if (status !== 'granted') {
+        alert('Permission for notifications was denied')
+        return
+      }
+
+      const token = await Notifications.getExpoPushTokenAsync()
+      console.log('Expo Push Token:', token.data)
+    } catch (error) {
+      console.error('Error getting a push token', error)
+    }
+  }
+
   const renderNotificationItem = ({ item }) => (
     <TouchableOpacity style={styles.notificationItem}>
       <View style={styles.notificationContent}>
-        <View style={styles.notificationIcon}>
-          <Text style={styles.iconText}>🔥</Text>
-        </View>
-        <View style={styles.notificationDetails}>
-          <Text style={styles.notificationTitle}>{item.title}</Text>
-          <Text style={styles.notificationMessage} numberOfLines={2}>
-            {item.message}
-          </Text>
-        </View>
-      </View>
-      <View style={styles.badgeContainer}>
-        <Text style={styles.badgeText}>1</Text>
+        <Text style={styles.notificationTitle}>{item.title}</Text>
+        <Text style={styles.notificationMessage}>{item.message}</Text>
       </View>
     </TouchableOpacity>
   )
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Thông báo</Text>
       {loading ? (
         <ActivityIndicator size="large" color="#00a86b" style={styles.loader} />
       ) : notifications.length === 0 ? (
@@ -82,7 +157,7 @@ export const NotificationScreen = () => {
         <FlatList
           data={notifications}
           renderItem={renderNotificationItem}
-          keyExtractor={(item) => item.notificationID}
+          keyExtractor={(item, index) => ` ${item.notificationID}_${index}`}
           contentContainerStyle={styles.listContainer}
         />
       )}
@@ -93,7 +168,7 @@ export const NotificationScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f4f6f9', // Soft background color for better contrast
+    backgroundColor: '#f4f6f9',
     paddingHorizontal: 15,
   },
   title: {
@@ -116,9 +191,6 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   notificationItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     backgroundColor: '#ffffff',
     paddingVertical: 12,
     paddingHorizontal: 15,
@@ -127,55 +199,19 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#ecf0f1',
-    shadowColor: '#bdc3c7',
-    shadowOpacity: 0.15,
-    shadowRadius: 5,
-    elevation: 3,
   },
   notificationContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 1,
-  },
-  notificationIcon: {
-    width: 45,
-    height: 45,
-    borderRadius: 22.5,
-    backgroundColor: '#ffecb3',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  iconText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#f39c12',
-  },
-  notificationDetails: {
-    flex: 1,
   },
   notificationTitle: {
     fontSize: 16,
     fontWeight: '600',
     color: '#34495e',
-    marginBottom: 5,
   },
   notificationMessage: {
     fontSize: 14,
     color: '#7f8c8d',
-  },
-  badgeContainer: {
-    width: 25,
-    height: 25,
-    borderRadius: 12.5,
-    backgroundColor: '#e74c3c',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  badgeText: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: 'bold',
   },
 })
 

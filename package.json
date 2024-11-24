@@ -11,6 +11,7 @@
     "dev:tailwind": "concurrently \"tailwindcss --input input.css --output tailwind.css --no-autoprefixer --watch\" \"tailwind-rn --watch\""
   },
   "dependencies": {
+    "@microsoft/signalr": "^8.0.7",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-native-community/checkbox": "^0.5.17",
     "@react-native-community/cli": "^15.1.2",
@@ -65,11 +66,13 @@
     "react-native-toast-message": "^2.2.1",
     "react-native-vector-icons": "^10.2.0",
     "react-native-web": "^0.19.13",
+    "react-native-webview": "^13.12.4",
     "react-redux": "^9.1.2",
     "redux-persist": "^6.0.0",
     "tailwind-rn": "^4.2.0",
     "undefined": "expo-auth-session/providers/google",
-    "yup": "^1.4.0"
+    "yup": "^1.4.0",
+    "expo-notifications": "~0.29.8"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
