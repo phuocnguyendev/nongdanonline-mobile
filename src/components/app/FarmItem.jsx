@@ -1,24 +1,23 @@
+import { Ionicons } from '@expo/vector-icons'
+import { useState } from 'react'
 import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  Linking,
-  TouchableOpacity,
   ActivityIndicator,
-} from "react-native";
-import PrimaryButton from "../ui/PrimaryButton";
-import { useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
+  Image,
+  Linking,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
+import PrimaryButton from '../ui/PrimaryButton'
 
 function FarmItem(props) {
   const openMap = (link) => {
     Linking.openURL(link).catch((err) =>
-      console.error("An error occurred", err)
-    );
-  };
-  const [loading, setLoading] = useState(true);
-
+      console.error('An error occurred', err),
+    )
+  }
+  const [loading, setLoading] = useState(true)
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -28,7 +27,7 @@ function FarmItem(props) {
             color="#00a86b"
             style={[
               styles.image,
-              { justifyContent: "center", alignItems: "center" },
+              { justifyContent: 'center', alignItems: 'center' },
             ]}
           />
         )}
@@ -64,7 +63,8 @@ function FarmItem(props) {
               props.farmOwner,
               props.phone,
               props.farmArea,
-              props.mapLink
+              props.mapLink,
+              props.farmID,
             )
           }
         >
@@ -72,68 +72,67 @@ function FarmItem(props) {
         </PrimaryButton>
       </View>
     </View>
-  );
+  )
 }
-
-export default FarmItem;
+export default FarmItem
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     margin: 25,
     borderRadius: 10,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderWidth: 1,
-    borderColor: "#e0e0e0",
+    borderColor: '#e0e0e0',
     elevation: 5,
   },
   imageContainer: {
-    width: "100%",
+    width: '100%',
     height: 200,
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   image: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
   infoContainer: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     paddingHorizontal: 10,
   },
   infoRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginVertical: 2,
   },
   description: {
     fontSize: 15,
-    color: "gray",
+    color: 'gray',
     marginLeft: 5,
   },
   info: {
     fontSize: 15,
-    color: "black",
+    color: 'black',
     marginLeft: 5,
   },
   title: {
     marginTop: 10,
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 5,
   },
   mapLinkContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginVertical: 2,
   },
   mapLink: {
-    color: "blue", // Styled as a hyperlink
-    textDecorationLine: "underline",
+    color: 'blue', // Styled as a hyperlink
+    textDecorationLine: 'underline',
     fontSize: 15,
     marginLeft: 5,
   },
@@ -141,4 +140,4 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
   },
-});
+})

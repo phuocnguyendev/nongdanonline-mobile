@@ -1,5 +1,7 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as ImagePicker from 'expo-image-picker'
-import React, { useState } from 'react'
+import { jwtDecode } from 'jwt-decode'
+import React, { useEffect, useState } from 'react'
 import {
   ActivityIndicator,
   Image,
@@ -10,21 +12,102 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
+import {
+  getUserInfo,
+  updateUserID,
+  uploadUserAvatar,
+} from '../../../api/user/user'
 
 export function Info() {
-  const [name, setName] = useState('John Doe')
-  const [phone, setPhone] = useState('0987654321')
-  const [selectedImage, setSelectedImage] = useState(
-    'https://firebasestorage.googleapis.com/v0/b/nongdanonline-458d0.appspot.com/o/LandingPage%2Ffarmer.png?alt=media&token=027e1e3c-c0d7-48db-aa91-edca13609ad3',
-  )
+  const [userData, setUserData] = useState(null)
+  const [selectedImage, setSelectedImage] = useState('')
   const [loading, setLoading] = useState(false)
+  const [isFetching, setIsFetching] = useState(true)
+  const [isSaving, setIsSaving] = useState(false)
+
+  const fetchUserInfo = async () => {
+    try {
+      const token = await AsyncStorage.getItem('accessToken')
+      if (!token) return
+
+      const decodedToken = jwtDecode(token)
+      const userId = decodedToken.id
+
+      const response = await getUserInfo(userId)
+
+      setUserData(response.data)
+      setSelectedImage(response.data.avatar)
+    } catch (error) {
+      console.error('Lỗi khi tải thông tin user:', error)
+    } finally {
+      setIsFetching(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchUserInfo()
+  }, [])
+
+  const handleSave = async () => {
+    if (!userData?.id) return
+    setIsSaving(true)
+
+    const phoneNumberPattern = /^0\d{9}$/
+    if (!phoneNumberPattern.test(userData.phoneNumber)) {
+      alert('Số điện thoại không hợp lệ. Vui lòng nhập lại.')
+      setIsSaving(false)
+      return
+    }
+
+    const updateProfilePromise = updateUserID(userData.id, {
+      name: userData.name,
+      phoneNumber: userData.phoneNumber,
+    })
+
+    let uploadAvatarPromise = Promise.resolve()
+
+    if (selectedImage && selectedImage !== userData.avatar) {
+      const formData = new FormData()
+      formData.append('avatarFile', {
+        uri: selectedImage,
+        name: 'avatar.jpg',
+        type: 'image/jpeg',
+      })
+
+      uploadAvatarPromise = uploadUserAvatar(userData.id, formData)
+    }
+
+    try {
+      const [updateProfileResponse, uploadAvatarResponse] = await Promise.all([
+        updateProfilePromise,
+        uploadAvatarPromise,
+      ])
+
+      if (updateProfileResponse?.statusCode === 200) {
+        setUserData(updateProfileResponse.data)
+        alert('Cập nhật thông tin người dùng thành công.')
+      }
+
+      if (uploadAvatarResponse?.statusCode === 200) {
+        setUserData((prev) => ({
+          ...prev,
+          avatar: uploadAvatarResponse.data.avatar,
+        }))
+      }
+    } catch (error) {
+      console.error('Error updating user info:', error)
+      alert('Có lỗi xảy ra khi cập nhật thông tin.')
+    } finally {
+      setIsSaving(false)
+    }
+  }
 
   const openImagePicker = async () => {
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync()
 
     if (permissionResult.granted === false) {
-      alert('Permission to access camera roll is required!')
+      alert('Bạn cần cấp quyền truy cập thư viện ảnh để tiếp tục.')
       return
     }
 
@@ -36,11 +119,29 @@ export function Info() {
       quality: 1,
     })
 
-    setLoading(false)
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      const selectedUri = result.assets[0].uri
 
-    if (!result.cancelled && result.assets && result.assets.length > 0) {
-      setSelectedImage(result.assets[0].uri)
+      const fileInfo = await fetch(selectedUri).then((res) => res.blob())
+      const maxSizeInBytes = 1 * 1024 * 1024
+
+      if (fileInfo.size > maxSizeInBytes) {
+        alert('Kích thước file phải nhỏ hơn 1MB.')
+        setLoading(false)
+        return
+      }
+
+      setSelectedImage(selectedUri)
     }
+    setLoading(false)
+  }
+
+  if (isFetching) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#16a34a" />
+      </View>
+    )
   }
 
   return (
@@ -55,8 +156,10 @@ export function Info() {
           <View style={styles.info}>
             <Text style={styles.label}>Tên</Text>
             <TextInput
-              value={name}
-              onChangeText={setName}
+              value={userData?.name || ''}
+              onChangeText={(text) =>
+                setUserData((prev) => ({ ...prev, name: text }))
+              }
               style={styles.textInput}
               placeholder="Nhập tên của bạn"
             />
@@ -64,14 +167,16 @@ export function Info() {
 
           <View style={styles.info}>
             <Text style={styles.label}>Email</Text>
-            <Text style={[styles.emailText]}>johndoe123example@gmail.com</Text>
+            <Text style={[styles.emailText]}>{userData?.email || ''}</Text>
           </View>
 
           <View style={styles.info}>
             <Text style={styles.label}>Số điện thoại</Text>
             <TextInput
-              value={phone}
-              onChangeText={setPhone}
+              value={userData?.phoneNumber || ''}
+              onChangeText={(text) =>
+                setUserData((prev) => ({ ...prev, phoneNumber: text }))
+              }
               keyboardType="phone-pad"
               style={styles.textInput}
               placeholder="Nhập số điện thoại của bạn"
@@ -100,8 +205,11 @@ export function Info() {
               <Text style={styles.text}>Định dạng: JPEG, PNG.</Text>
               <TouchableOpacity
                 style={[styles.button, { backgroundColor: '#00a86b' }]}
+                onPress={handleSave}
               >
-                <Text style={styles.buttonText}>Lưu</Text>
+                <Text style={styles.buttonText}>
+                  {isSaving ? 'Đang lưu...' : 'Lưu'}
+                </Text>
               </TouchableOpacity>
             </>
           )}
@@ -201,5 +309,10 @@ const styles = StyleSheet.create({
     color: '#555',
     textAlign: 'center',
     marginBottom: 5,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })

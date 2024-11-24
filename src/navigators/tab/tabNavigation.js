@@ -5,6 +5,7 @@ import { Platform } from 'react-native'
 import Placeholder from '../../components/app/lazyPlaceholder'
 import ListFarmNavigation from '../stack/listFarmNavigation'
 import MyFarmNavigation from '../stack/myFarmNavigation'
+import NotificationNavigation from '../stack/notificationNavigation'
 
 const Tab = createBottomTabNavigator()
 
@@ -102,7 +103,7 @@ function TabNavigation({ navigation }) {
       />
       <Tab.Screen
         name="Notifications"
-        component={Placeholder}
+        component={NotificationNavigation}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
