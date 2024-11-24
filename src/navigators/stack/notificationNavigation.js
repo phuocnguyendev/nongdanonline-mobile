@@ -1,21 +1,20 @@
 import { Ionicons } from '@expo/vector-icons'
 import { createStackNavigator } from '@react-navigation/stack'
 import IconButton from '../../components/ui/IconButton'
-import { FarmList } from '../../screens/homeTab'
 import ShoppingCart from '../../screens/homeTab/ShoppingCart'
-import AboutFarmNavigation from './aboutFarmNavigation'
+import NotificationScreen from '../../screens/user/NotificationScreen'
 
 const Stack = createStackNavigator()
 
-export default function ListFarmNavigation({ navigation }) {
+export default function NotificationNavigation({ navigation }) {
   return (
     <Stack.Navigator screenOptions={{ headerBackTitleVisible: false }}>
       <Stack.Screen
-        name="Farms List"
-        component={FarmList}
+        name="Notification List"
+        component={NotificationScreen}
         options={{
           headerShown: true,
-          title: 'Danh sách Trang trại',
+          title: 'Thông báo',
           headerLeft: () => (
             <Ionicons
               name="menu"
@@ -41,11 +40,6 @@ export default function ListFarmNavigation({ navigation }) {
           },
           headerTitleAlign: 'center',
         }}
-      />
-      <Stack.Screen
-        name="AboutFarm Navigation"
-        component={AboutFarmNavigation}
-        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="ShoppingCart"

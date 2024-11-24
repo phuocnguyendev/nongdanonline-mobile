@@ -9,7 +9,10 @@ import {
 import PackageView from '../../../components/app/packageView'
 import ProductView from '../../../components/app/productView'
 
-export function ProductFarm({ navigation }) {
+export function ProductFarm({ navigation, route }) {
+  const { data } = route.params
+  const farmID = data.farmID
+
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
@@ -21,8 +24,8 @@ export function ProductFarm({ navigation }) {
           <Text style={styles.navText}>Thông tin Trang trại</Text>
         </TouchableOpacity>
         <View style={styles.item}>
-          <ProductView />
-          <PackageView />
+          <ProductView blocks={data.blocks || []} farmID={farmID} />
+          <PackageView animals={data.animals || []} farmID={farmID} />
         </View>
       </View>
     </ScrollView>

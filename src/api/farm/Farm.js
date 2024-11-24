@@ -4,6 +4,15 @@ export const getFarms = async () => {
   const response = await instance.get('/farms')
   return response.data?.data || []
 }
+export const getFarmDetails = async (farmID) => {
+  try {
+    const response = await instance.get(`/farms/${farmID}/details`)
+    return response.data?.data || {}
+  } catch (error) {
+    console.error('Error fetching farm details:', error)
+    return {}
+  }
+}
 export const getBlocksByFarm = async (farmID, pageIndex = 1, pageSize = 5) => {
   const response = await instance.get(`/block-owner-users/${farmID}`, {
     params: { pageIndex, pageSize },
@@ -86,4 +95,7 @@ export const getAnimalDetails = async (animalOwnerUserId) => {
     console.error('Error fetching animal details:', error)
     return {}
   }
+}
+export const myFarm = async (data) => {
+  return await instance.get(`/block-owner-users/my-farm`, data)
 }

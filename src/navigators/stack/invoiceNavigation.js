@@ -1,19 +1,19 @@
 import { createStackNavigator } from '@react-navigation/stack'
-import { InvoiceDetail, InvoiceInfo } from '../../screens/user/profile'
+import { HistoryOrder, HistoryOrderDetails } from '../../screens/user/profile'
 
 const Stack = createStackNavigator()
 
-export default function InvoiceNavigation({ navigation }) {
+export default function InvoiceNavigation({}) {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="InvoiceInfo"
-        component={InvoiceInfo}
+        name="HistoryOrder"
+        component={HistoryOrder}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="InvoiceDetail"
-        component={InvoiceDetail}
+        name="HistoryOrderDetails"
+        component={HistoryOrderDetails}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

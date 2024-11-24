@@ -1,6 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useHeaderHeight } from '@react-navigation/elements'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import {
   Dimensions,
   ImageBackground,
@@ -29,6 +29,7 @@ export function ForgotPass({}) {
     setEmail(value)
     setIsValidEmail(validateEmail(value))
   }
+
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return regex.test(email)
@@ -43,7 +44,8 @@ export function ForgotPass({}) {
       await postForgotPass(data)
       setModalSuccessVisible(true)
     } catch (error) {
-      setModalFailVisible(true), console.error('Error:', error)
+      setModalFailVisible(true)
+      console.error('Error:', error)
     }
   }
 
@@ -85,18 +87,23 @@ export function ForgotPass({}) {
             </View>
             {email ? (
               isValidEmail ? null : (
-                <Text style={{ color: 'red', marginTop: 5 }}>
-                  Email không hợp lệ
-                </Text>
+                <Text style={styles.errorText}>Email không hợp lệ</Text>
               )
             ) : null}
           </View>
-          <TouchableOpacity style={styles.nextContainer} onPress={handleSend}>
+          <TouchableOpacity
+            style={[
+              styles.nextContainer,
+              !isValidEmail && styles.disabledButton,
+            ]}
+            onPress={handleSend}
+            disabled={!isValidEmail}
+          >
             <Text style={styles.nextText}>Gửi</Text>
           </TouchableOpacity>
         </View>
 
-        {/*Modal*/}
+        {/* Modal Thành Công */}
         <Modal
           animationType="fade"
           transparent={true}
@@ -104,31 +111,17 @@ export function ForgotPass({}) {
           onRequestClose={closeModal}
         >
           <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              {/* Close button (X icon) */}
-              <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-                <Ionicons name="close" size={24} color="black" />
-              </TouchableOpacity>
-              {/* Modal title */}
-              <Text style={[styles.modalTitle, { color: 'green' }]}>
-                Thông báo
+            <View style={[styles.modalContent, styles.successModal]}>
+              <Ionicons name="checkmark-circle" size={64} color="#4caf50" />
+              <Text style={[styles.modalTitle, { color: '#4caf50' }]}>
+                Thành công!
               </Text>
-              {/* Modal message */}
               <Text style={styles.modalMessage}>
-                Gửi Email thành công! {'\n\n'}
-                Hãy tuân thủ các bước sau đây để hoàn tất quá trình khôi phục
-                mật khẩu: {'\n\n'}
-                1/ Vào ứng dụng Gmail và tìm Email "nongdanonlinee@gmail.com"{' '}
-                {'\n'}
-                2/ Truy cập vào tin nhắn mới nhất từ Email vừa tìm kiếm {'\n'}
-                3/ Nhấn "Đặt lại mật khẩu", trang sẽ chuyển hướng bạn đến trang
-                web, hãy điền hết tất cả các thông tin cần thiết. {'\n'}
-                4/ Sau khi khôi phục mật khẩu hoàn tất, truy lại vào ứng dụng
-                Nông Dân Online và thực hiện đăng nhập với mật khẩu vừa đặt.
+                Email khôi phục mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư
+                của bạn.
               </Text>
-              {/* "Đã hiểu" button */}
               <TouchableOpacity
-                style={styles.understoodButton}
+                style={[styles.understoodButton, styles.successButton]}
                 onPress={closeModal}
               >
                 <Text style={styles.buttonText}>Đã hiểu</Text>
@@ -137,7 +130,7 @@ export function ForgotPass({}) {
           </View>
         </Modal>
 
-        {/*Modal*/}
+        {/* Modal Thất Bại */}
         <Modal
           animationType="fade"
           transparent={true}
@@ -145,20 +138,16 @@ export function ForgotPass({}) {
           onRequestClose={closeModal}
         >
           <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              {/* Close button (X icon) */}
-              <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-                <Ionicons name="close" size={24} color="black" />
-              </TouchableOpacity>
-              {/* Modal title */}
-              <Text style={[styles.modalTitle, { color: 'red' }]}>
-                Thông báo
+            <View style={[styles.modalContent, styles.failModal]}>
+              <Ionicons name="close-circle" size={64} color="#f44336" />
+              <Text style={[styles.modalTitle, { color: '#f44336' }]}>
+                Thất bại!
               </Text>
-              {/* Modal message */}
-              <Text style={styles.modalMessage}>Gửi Email thất bại.</Text>
-              {/* "Đã hiểu" button */}
+              <Text style={styles.modalMessage}>
+                Không thể gửi email. Vui lòng thử lại sau.
+              </Text>
               <TouchableOpacity
-                style={styles.understoodButton}
+                style={[styles.understoodButton, styles.failButton]}
                 onPress={closeModal}
               >
                 <Text style={styles.buttonText}>Đã hiểu</Text>
@@ -207,9 +196,13 @@ const styles = StyleSheet.create({
     padding: 2,
     flex: 1,
   },
+  errorText: {
+    color: 'red',
+    marginTop: 5,
+  },
   nextContainer: {
     borderRadius: 20,
-    backgroundColor: '#2dcc6f',
+    backgroundColor: '#4caf50',
     paddingVertical: 15,
     elevation: 4,
   },
@@ -218,6 +211,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#fff',
     fontWeight: 'bold',
+  },
+  disabledButton: {
+    backgroundColor: '#ddd',
   },
   modalContainer: {
     flex: 1,
@@ -233,26 +229,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'relative',
   },
+  successModal: {
+    borderColor: '#4caf50',
+    borderWidth: 2,
+  },
+  failModal: {
+    borderColor: '#f44336',
+    borderWidth: 2,
+  },
   modalTitle: {
     fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginVertical: 10,
   },
   modalMessage: {
     fontSize: 16,
     lineHeight: 24,
-    textAlign: 'left',
+    textAlign: 'center',
     marginBottom: 20,
   },
-  closeButton: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-  },
   understoodButton: {
-    backgroundColor: '#007bff',
     padding: 10,
     borderRadius: 5,
+    width: '100%',
+    alignItems: 'center',
+  },
+  successButton: {
+    backgroundColor: '#4caf50',
+  },
+  failButton: {
+    backgroundColor: '#f44336',
   },
   buttonText: {
     color: '#fff',
