@@ -118,7 +118,6 @@ const UpdateAddressPopup = ({ closeModal, navigation }) => {
       }
     },
   })
-
   const handleProvinceChange = (selectedOption) => {
     setSelectedProvince(selectedOption)
     setSelectedDistrict(null)
@@ -279,7 +278,12 @@ const UpdateAddressPopup = ({ closeModal, navigation }) => {
         </View>
 
         <View style={styles.actions}>
-          <TouchableOpacity onPress={closeModal} style={styles.cancelButton}>
+          <TouchableOpacity
+            onPress={() => {
+              closeModal ? closeModal() : navigation.goBack()
+            }}
+            style={styles.cancelButton}
+          >
             <Text style={styles.cancelButtonText}>Đóng</Text>
           </TouchableOpacity>
           <TouchableOpacity

@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
+import AnimalHealth from '../screens/homeTab/AnimalHealth'
 import Checkout from '../screens/homeTab/Checkout'
 import Camera from '../screens/homeTab/InfoAnimal/Camera'
 import Sensor from '../screens/homeTab/InfoAnimal/Sensor'
@@ -74,6 +75,11 @@ export function Navigator() {
           options={{ title: 'Cập nhật địa chỉ' }}
         />
         <Stack.Screen name="QRCodeScreen" component={QRCodeScreen} />
+        <Stack.Screen
+          name="AnimalHealth"
+          component={AnimalHealth}
+          options={{ title: 'Sổ Theo Dõi Sức Khỏe' }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   )

@@ -7,6 +7,7 @@ import {
   ShippingHistory,
   UpdatePassword,
 } from '../../screens/user/profile'
+import AnimalHistory from '../../screens/user/profile/AnimalHistory'
 import InvoiceNavigation from './invoiceNavigation'
 
 const Tab = createMaterialTopTabNavigator()
@@ -17,15 +18,23 @@ export default function ProfileNavigation({}) {
       screenOptions={{
         lazy: true,
         lazyPlaceholder: () => <Placeholder />,
-        tabBarLabelStyle: { fontSize: 14 },
-        tabBarActiveTintColor: '#00a86b',
-        tabBarInactiveTintColor: 'gray',
-        tabBarIndicatorStyle: {
-          backgroundColor: '#00a86b',
+        tabBarLabelStyle: {
+          fontSize: 14,
+          fontWeight: 'bold',
+          textTransform: 'capitalize',
         },
-        initialRouteName: 'Info',
+        tabBarActiveTintColor: '#00A86B', // Emerald green for active tab
+        tabBarInactiveTintColor: '#BDC3C7', // Soft gray for inactive tab
+        tabBarIndicatorStyle: {
+          backgroundColor: '#00A86B', // Match the active tint color
+          height: 3, // Slightly thicker indicator for better visibility
+        },
+        tabBarStyle: {
+          backgroundColor: '#FFFFFF', // White background for contrast
+          elevation: 4, // Add shadow for better appearance
+        },
         tabBarAndroidRipple: { borderless: false },
-        tabBarPressColor: '#7affcf',
+        tabBarPressColor: '#E8F5E9', // Light green ripple effect
       }}
     >
       <Tab.Screen
@@ -52,6 +61,11 @@ export default function ProfileNavigation({}) {
         name="InvoiceNavigation"
         component={InvoiceNavigation}
         options={{ tabBarLabel: 'Đơn mua' }}
+      />
+      <Tab.Screen
+        name="AnimalHistory"
+        component={AnimalHistory}
+        options={{ tabBarLabel: 'Lịch sử chăn nuôi' }}
       />
     </Tab.Navigator>
   )

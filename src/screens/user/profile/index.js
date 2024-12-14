@@ -1,4 +1,5 @@
 export * from './AddressScreen'
+export * from './AnimalHistory'
 export * from './HistoryOrder'
 export * from './HistoryOrderDetails'
 export * from './info'

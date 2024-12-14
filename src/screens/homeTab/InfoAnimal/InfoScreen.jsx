@@ -1,13 +1,38 @@
+import { useNavigation } from '@react-navigation/native'
 import React from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import InfoItem from '../../../components/app/InfoItem'
 import { formatWeight, formattedDate } from '../../../utils/Format'
 
 const InfoScreen = ({ route }) => {
   const { animalData } = route.params
+  const navigation = useNavigation()
+
+  const handleViewHealthRecord = () => {
+    navigation.navigate('AnimalHealth', {
+      animalOwnerId: animalData.animalOwnerUserId,
+    }) // Ensure the AnimalHealth screen is properly set up in navigation
+  }
 
   return (
     <ScrollView style={styles.container}>
+      {/* Health Record Button */}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.healthButton}
+          onPress={handleViewHealthRecord}
+        >
+          <Text style={styles.healthButtonText}>Sổ Sức Khỏe</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Animal Info */}
       <View style={styles.rowContainer}>
         <InfoItem
           iconName="paw"
@@ -55,6 +80,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 16,
+  },
+  buttonContainer: {
+    marginBottom: 20, // Add spacing below the button
+    alignItems: 'center',
+    marginLeft: 215,
+  },
+  healthButton: {
+    backgroundColor: '#00A86B', // Emerald green
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
+  healthButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 })
 

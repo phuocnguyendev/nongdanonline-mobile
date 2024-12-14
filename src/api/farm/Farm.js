@@ -99,3 +99,38 @@ export const getAnimalDetails = async (animalOwnerUserId) => {
 export const myFarm = async (data) => {
   return await instance.get(`/block-owner-users/my-farm`, data)
 }
+
+export const getAnimalHistory = (userId) => {
+  return instance.get(`animal-owner-users/get-histories?userId=${userId}`)
+}
+
+export const getAnimalHistoryHealth = async (
+  animalOwnerUserId,
+  specificDate = null,
+  startDate = null,
+  endDate = null,
+) => {
+  try {
+    const params = {}
+
+    if (specificDate) {
+      params.specificDate = specificDate
+    }
+    if (startDate) {
+      params.startDate = startDate
+    }
+    if (endDate) {
+      params.endDate = endDate
+    }
+
+    const response = await instance.get(
+      `/animal-raising-history/${animalOwnerUserId}`,
+      {
+        params,
+      },
+    )
+    return response
+  } catch (error) {
+    throw error
+  }
+}

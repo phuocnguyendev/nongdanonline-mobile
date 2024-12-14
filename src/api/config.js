@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export const instance = axios.create({
   baseURL:
-    process.env.REACT_APP_BASE_URL || 'https://hutaomovietheater.net/api/v1',
+    process.env.REACT_APP_BASE_URL || 'https://nongdanonline.id.vn/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },
