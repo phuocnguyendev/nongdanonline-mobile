@@ -1,6 +1,5 @@
 import { Ionicons } from '@expo/vector-icons'
 import { createStackNavigator } from '@react-navigation/stack'
-import IconButton from '../../components/ui/IconButton'
 import ProfileNavigation from './profileNavigation'
 
 const Stack = createStackNavigator()
@@ -24,13 +23,6 @@ export default function InfoNavigation({ navigation }) {
             color="#fff"
             style={{ marginLeft: 15 }}
             onPress={() => navigation.toggleDrawer()}
-          />
-        ),
-        headerRight: () => (
-          <IconButton
-            icon="cart-outline"
-            color="green"
-            onPress={() => navigation.navigate('ShoppingCart')}
           />
         ),
         headerTitleAlign: 'center',

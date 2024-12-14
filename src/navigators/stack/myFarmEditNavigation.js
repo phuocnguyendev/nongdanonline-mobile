@@ -1,6 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react' // Remove useState import
-import IconButton from '../../components/ui/IconButton'
 
 const Stack = createStackNavigator()
 
@@ -14,13 +13,6 @@ export default function MyFarmEditNavigation({ route, navigation }) {
         component={MyFarmEdit}
         options={{
           title: title,
-          headerRight: () => (
-            <IconButton
-              icon="cart-outline"
-              color="green"
-              onPress={() => navigation.navigate('ShoppingCart')}
-            />
-          ),
           headerStyle: {
             backgroundColor: '#00a86b',
           },

@@ -2,9 +2,7 @@ import {
   CardStyleInterpolators,
   createStackNavigator,
 } from '@react-navigation/stack'
-import IconButton from '../../components/ui/IconButton'
 import { FarmInfo, ProductFarm } from '../../screens/homeTab/farm/index'
-import ShoppingCart from '../../screens/homeTab/ShoppingCart'
 const Stack = createStackNavigator()
 
 export default function AboutFarmNavigation({ route, navigation }) {
@@ -30,13 +28,6 @@ export default function AboutFarmNavigation({ route, navigation }) {
             fontWeight: 'bold',
           },
           headerTitleAlign: 'center',
-          headerRight: () => (
-            <IconButton
-              icon="cart-outline"
-              color="green"
-              onPress={() => navigation.navigate('ShoppingCart')}
-            />
-          ),
         }}
       />
       <Stack.Screen
@@ -53,28 +44,6 @@ export default function AboutFarmNavigation({ route, navigation }) {
           },
           headerTitleAlign: 'center',
           headerLeft: null,
-          headerRight: () => (
-            <IconButton
-              icon="cart-outline"
-              color="green"
-              onPress={() => navigation.navigate('ShoppingCart')}
-            />
-          ),
-        }}
-      />
-      <Stack.Screen
-        name="ShoppingCart"
-        component={ShoppingCart}
-        options={{
-          title: 'Giỏ hàng',
-          headerStyle: {
-            backgroundColor: '#00a86b',
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerTitleAlign: 'center',
         }}
       />
     </Stack.Navigator>

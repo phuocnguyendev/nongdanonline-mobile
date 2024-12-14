@@ -1,7 +1,5 @@
 import { Ionicons } from '@expo/vector-icons'
 import { createStackNavigator } from '@react-navigation/stack'
-import IconButton from '../../components/ui/IconButton'
-import ShoppingCart from '../../screens/homeTab/ShoppingCart'
 import NotificationScreen from '../../screens/user/NotificationScreen'
 
 const Stack = createStackNavigator()
@@ -24,13 +22,6 @@ export default function NotificationNavigation({ navigation }) {
               onPress={() => navigation.toggleDrawer()}
             />
           ),
-          headerRight: () => (
-            <IconButton
-              icon="cart-outline"
-              color="green"
-              onPress={() => navigation.navigate('ShoppingCart')}
-            />
-          ),
           headerStyle: {
             backgroundColor: '#00a86b',
           },
@@ -38,16 +29,6 @@ export default function NotificationNavigation({ navigation }) {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
-          headerTitleAlign: 'center',
-        }}
-      />
-      <Stack.Screen
-        name="ShoppingCart"
-        component={ShoppingCart}
-        options={{
-          title: 'Giỏ hàng',
-          headerStyle: { backgroundColor: '#00a86b' },
-          headerTintColor: '#fff',
           headerTitleAlign: 'center',
         }}
       />

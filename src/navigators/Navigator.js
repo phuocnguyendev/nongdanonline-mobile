@@ -6,7 +6,6 @@ import Checkout from '../screens/homeTab/Checkout'
 import Camera from '../screens/homeTab/InfoAnimal/Camera'
 import Sensor from '../screens/homeTab/InfoAnimal/Sensor'
 import QRCodeScreen from '../screens/homeTab/QRCodeScreen'
-import ShoppingCart from '../screens/homeTab/ShoppingCart'
 import AddressScreenCreate from '../screens/user/profile/AddressScreenCreate'
 import UpdateAddressPopup from '../screens/user/profile/UpdateAddressPopup'
 import DrawerNavigation from './drawer/drawerNavigation'
@@ -49,16 +48,6 @@ export function Navigator() {
           component={Checkout}
           options={{
             title: 'Thanh Toán',
-            headerStyle: { backgroundColor: '#00a86b' },
-            headerTintColor: '#fff',
-            headerTitleAlign: 'center',
-          }}
-        />
-        <Stack.Screen
-          name="ShoppingCart"
-          component={ShoppingCart}
-          options={{
-            title: 'Giỏ hàng',
             headerStyle: { backgroundColor: '#00a86b' },
             headerTintColor: '#fff',
             headerTitleAlign: 'center',

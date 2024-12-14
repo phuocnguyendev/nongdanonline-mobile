@@ -1,6 +1,5 @@
 import { Ionicons } from '@expo/vector-icons'
 import { createStackNavigator } from '@react-navigation/stack'
-import IconButton from '../../components/ui/IconButton'
 import { About } from '../../screens/about'
 
 const Stack = createStackNavigator()
@@ -28,14 +27,6 @@ export default function ContactNavigation({ navigation }) {
             onPress={() => navigation.toggleDrawer()}
           />
         ),
-        headerRight: () => (
-          <IconButton
-            icon="cart-outline"
-            color="green"
-            onPress={() => navigation.navigate('ShoppingCart')}
-          />
-        ),
-        headerTitleAlign: 'center',
       }}
     >
       <Stack.Screen name="AboutUs" component={About} />

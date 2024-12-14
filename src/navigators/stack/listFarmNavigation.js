@@ -1,8 +1,6 @@
 import { Ionicons } from '@expo/vector-icons'
 import { createStackNavigator } from '@react-navigation/stack'
-import IconButton from '../../components/ui/IconButton'
 import { FarmList } from '../../screens/homeTab'
-import ShoppingCart from '../../screens/homeTab/ShoppingCart'
 import AboutFarmNavigation from './aboutFarmNavigation'
 
 const Stack = createStackNavigator()
@@ -25,13 +23,6 @@ export default function ListFarmNavigation({ navigation }) {
               onPress={() => navigation.toggleDrawer()}
             />
           ),
-          headerRight: () => (
-            <IconButton
-              icon="cart-outline"
-              color="green"
-              onPress={() => navigation.navigate('ShoppingCart')}
-            />
-          ),
           headerStyle: {
             backgroundColor: '#00a86b',
           },
@@ -46,16 +37,6 @@ export default function ListFarmNavigation({ navigation }) {
         name="AboutFarm Navigation"
         component={AboutFarmNavigation}
         options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="ShoppingCart"
-        component={ShoppingCart}
-        options={{
-          title: 'Giỏ hàng',
-          headerStyle: { backgroundColor: '#00a86b' },
-          headerTintColor: '#fff',
-          headerTitleAlign: 'center',
-        }}
       />
     </Stack.Navigator>
   )

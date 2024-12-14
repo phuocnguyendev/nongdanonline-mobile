@@ -44,10 +44,6 @@ export function Login({ navigation }) {
     androidClientId: 'YOUR_ANDROID_CLIENT_ID.apps.googleusercontent.com',
   })
 
-  const loginApple = () => {
-    Alert.alert(t('login.appleSignInMessage'), '', [{ text: t('login.ok') }])
-  }
-
   const handleLogin = async (values) => {
     try {
       const response = await postLogin(values)
@@ -240,11 +236,6 @@ export function Login({ navigation }) {
                 onPress={() => promptAsync()}
                 icon={require('../../assets/google.png')}
                 title={t('login.signInWithGoogle')}
-              />
-              <SocialLoginButton
-                onPress={loginApple}
-                icon={require('../../assets/apple.png')}
-                title={t('login.signInWithApple')}
               />
             </View>
           </View>
