@@ -1,13 +1,13 @@
 import * as Yup from 'yup'
 
-const getLoginValidationSchema = (t) =>
+const getLoginValidationSchema = () =>
   Yup.object().shape({
     email: Yup.string()
-      .email(t('validation.invalidEmail'))
-      .required(t('validation.requiredEmail')),
+      .email('Email không hợp lệ')
+      .required('Email là bắt buộc'),
     password: Yup.string()
-      .min(1, t('validation.minPassword'))
-      .required(t('validation.requiredPassword')),
+      .min(1, 'Mật khẩu phải có ít nhất 1 ký tự')
+      .required('Mật khẩu là bắt buộc'),
   })
 
 export default getLoginValidationSchema
