@@ -157,12 +157,12 @@ export const ShippingHistory = () => {
         <Text style={styles.shippingCode}>
           🚚 Mã Vận Chuyển: {item.shippingCode}
         </Text>
-        <Text
-          style={[styles.status, item.shippingStatus === 3 && styles.canceled]}
-        >
-          {convertShippingStatus(item.shippingStatus)}
-        </Text>
       </View>
+      <Text
+        style={[styles.status, item.shippingStatus === 3 && styles.canceled]}
+      >
+        {convertShippingStatus(item.shippingStatus)}
+      </Text>
       <Text style={styles.subHeader}>Danh Sách Vật Nuôi:</Text>
       {item.animalShippings.map((animal, index) => (
         <View key={index} style={styles.animalItem}>
@@ -219,60 +219,88 @@ export const ShippingHistory = () => {
     [totalPages],
   )
 
+  const clearAllFilters = () => {
+    setShippingStatus('')
+    setFarmID('')
+    setShippingDate(null)
+    setShippingCode('')
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Lịch Sử Giao Hàng</Text>
       <View style={styles.filters}>
-        <DropDownPicker
-          open={dropdownOpen}
-          value={shippingStatus}
-          items={shippingStatusOptions}
-          setOpen={setDropdownOpen}
-          setValue={setShippingStatus}
-          style={styles.dropdown}
-          placeholder="Trạng Thái"
-          zIndex={3000}
-          zIndexInverse={1000}
-        />
-        <DropDownPicker
-          open={farmDropdownOpen}
-          value={farmID}
-          items={farms}
-          setOpen={setFarmDropdownOpen}
-          setValue={setFarmID}
-          style={styles.dropdown}
-          placeholder="Chọn Nông Trại"
-        />
-        <TouchableOpacity
-          onPress={() => setShowDatePicker(true)}
-          style={styles.dateButton}
-        >
-          <Text style={styles.dateButtonText}>
-            {shippingDate
-              ? shippingDate.toLocaleDateString('en-CA')
-              : 'Ngày Vận Chuyển'}
-          </Text>
-        </TouchableOpacity>
-        {showDatePicker && (
-          <DateTimePicker
-            value={shippingDate || new Date()}
-            mode="date"
-            display="default"
-            onChange={(event, selectedDate) => {
-              setShowDatePicker(false)
-              if (selectedDate) {
-                setShippingDate(new Date(selectedDate))
-              }
-            }}
+        <View style={styles.filterRow}>
+          <DropDownPicker
+            open={dropdownOpen}
+            value={shippingStatus}
+            items={shippingStatusOptions}
+            setOpen={setDropdownOpen}
+            setValue={setShippingStatus}
+            style={[styles.dropdown, { marginRight: 10 }]}
+            containerStyle={{ width: '48%' }}
+            placeholder="Trạng Thái"
+            zIndex={3000}
+            zIndexInverse={1000}
           />
-        )}
+          <DropDownPicker
+            open={farmDropdownOpen}
+            value={farmID}
+            items={farms}
+            setOpen={setFarmDropdownOpen}
+            setValue={setFarmID}
+            style={styles.dropdown}
+            containerStyle={{ width: '48%' }}
+            placeholder="Chọn Nông Trại"
+            zIndex={3000}
+            zIndexInverse={1000}
+          />
+        </View>
+
+        <View style={styles.filterRow}>
+          <TouchableOpacity
+            onPress={() => setShowDatePicker(true)}
+            style={[styles.dateButton, { flex: 1 }]}
+          >
+            <Text style={styles.dateButtonText}>
+              {shippingDate
+                ? shippingDate.toLocaleDateString('en-CA')
+                : 'Ngày Vận Chuyển'}
+            </Text>
+          </TouchableOpacity>
+
+          {showDatePicker && (
+            <DateTimePicker
+              value={shippingDate || new Date()}
+              mode="date"
+              display="default"
+              onChange={(event, selectedDate) => {
+                setShowDatePicker(false)
+                if (selectedDate) {
+                  setShippingDate(new Date(selectedDate))
+                }
+              }}
+            />
+          )}
+        </View>
+
         <TextInput
           style={styles.input}
           placeholder="Mã Vận Chuyển"
           value={shippingCode}
           onChangeText={(text) => setShippingCode(text)}
         />
+
+        {(shippingStatus || farmID || shippingDate || shippingCode) && (
+          <TouchableOpacity
+            style={styles.clearAllButton}
+            onPress={clearAllFilters}
+          >
+            <Text style={styles.clearAllText}> Xóa bộ lọc</Text>
+          </TouchableOpacity>
+        )}
       </View>
+
       {loading ? (
         <ActivityIndicator size="large" color="#00a86b" style={styles.loader} />
       ) : shippingOrders.length === 0 ? (
@@ -344,27 +372,27 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   filters: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    marginBottom: 20,
+    width: '100%',
+    gap: 10,
   },
-  dropdown: {
-    width: '45%',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    paddingHorizontal: 10,
-    backgroundColor: '#fff',
+  filterRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 10,
   },
-  dateButton: {
-    width: '45%',
+  dropdown: {
+    backgroundColor: '#fff',
+    borderColor: '#ddd',
     borderRadius: 8,
+    height: 40,
+  },
+  dateButton: {
+    backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#ddd',
+    borderRadius: 8,
     padding: 10,
-    backgroundColor: '#fff',
+    height: 40,
     justifyContent: 'center',
   },
   dateButtonText: {
@@ -372,13 +400,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   input: {
-    width: '100%',
+    backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 8,
     padding: 10,
-    backgroundColor: '#fff',
-    marginBottom: 10,
+    height: 40,
   },
   loader: {
     marginTop: 50,
@@ -388,69 +415,6 @@ const styles = StyleSheet.create({
     marginTop: 50,
     fontSize: 16,
     color: '#555',
-  },
-  shippingItem: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 15,
-    marginBottom: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 2,
-  },
-  shippingCode: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  shippingStatus: {
-    fontSize: 14,
-    color: '#555',
-  },
-  shippingDate: {
-    marginTop: 5,
-    fontSize: 14,
-    color: '#555',
-  },
-  shippingTotalWeight: {
-    marginTop: 5,
-    fontSize: 14,
-    color: '#00a86b',
-  },
-  paginationContainer: {
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  pagination: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 20,
-  },
-  pageButton: {
-    marginHorizontal: 5,
-    padding: 10,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#fff',
-    borderColor: '#ddd',
-    borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  activePageButton: {
-    backgroundColor: '#00a86b',
-    borderColor: '#00a86b',
-  },
-  pageText: {
-    fontSize: 14,
-    color: '#555',
-    textAlign: 'center',
-  },
-  activePageText: {
-    color: '#fff',
-    textAlign: 'center',
   },
   shippingCard: {
     backgroundColor: '#fff',
@@ -523,6 +487,66 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#00a86b',
     marginTop: 5,
+  },
+  paginationContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  pagination: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  pageButton: {
+    marginHorizontal: 5,
+    padding: 10,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#fff',
+    borderColor: '#ddd',
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  activePageButton: {
+    backgroundColor: '#00a86b',
+    borderColor: '#00a86b',
+  },
+  pageText: {
+    fontSize: 14,
+    color: '#555',
+    textAlign: 'center',
+  },
+  activePageText: {
+    color: '#fff',
+    textAlign: 'center',
+  },
+  clearAllButton: {
+    alignSelf: 'flex-end',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    backgroundColor: '#f8f8f8',
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 15,
+    marginTop: 5,
+    marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 1,
+    elevation: 1,
+  },
+  clearAllText: {
+    color: '#666',
+    fontSize: 12,
+    fontWeight: '500',
   },
 })
 

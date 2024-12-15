@@ -19,7 +19,7 @@ export default function ProfileNavigation({}) {
         lazy: true,
         lazyPlaceholder: () => <Placeholder />,
         tabBarLabelStyle: {
-          fontSize: 14,
+          fontSize: 10,
           fontWeight: 'bold',
           textTransform: 'capitalize',
         },

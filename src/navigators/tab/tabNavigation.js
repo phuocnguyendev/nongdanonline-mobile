@@ -14,6 +14,7 @@ function TabNavigation({ navigation }) {
     <Tab.Navigator
       screenOptions={{
         lazy: true,
+        unmountOnBlur: true,
         lazyPlaceholder: () => <Placeholder />,
         headerStyle: { backgroundColor: '#00a86b' },
         headerTintColor: '#fff',
@@ -84,7 +85,7 @@ function TabNavigation({ navigation }) {
           unmountOnBlur: true,
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Messages"
         component={Placeholder}
         options={{
@@ -100,7 +101,7 @@ function TabNavigation({ navigation }) {
           tabBarLabel: 'Tin nhắn',
           unmountOnBlur: true,
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Notifications"
         component={NotificationNavigation}
@@ -118,7 +119,7 @@ function TabNavigation({ navigation }) {
           unmountOnBlur: true,
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Settings"
         component={Placeholder}
         options={{
@@ -134,7 +135,7 @@ function TabNavigation({ navigation }) {
           tabBarLabel: 'Cài đặt',
           unmountOnBlur: true,
         }}
-      />
+      /> */}
     </Tab.Navigator>
   )
 }

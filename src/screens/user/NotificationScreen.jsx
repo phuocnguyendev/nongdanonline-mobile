@@ -142,8 +142,19 @@ export const NotificationScreen = () => {
     <TouchableOpacity style={styles.notificationItem}>
       <View style={styles.notificationContent}>
         <Text style={styles.notificationTitle}>{item.title}</Text>
-        <Text style={styles.notificationMessage}>{item.message}</Text>
       </View>
+      <Text style={styles.notificationMessage}>{item.message}</Text>
+      <Text style={styles.notificationMessage}>
+        {new Date(item.date).toLocaleString('vi-VN', {
+          timeZone: 'Asia/Ho_Chi_Minh',
+          hour12: false,
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+        })}
+      </Text>
     </TouchableOpacity>
   )
 

@@ -63,10 +63,10 @@ const AnimalHistory = () => {
         />
         <View style={styles.textContainer}>
           <Text style={styles.animalName}>{item.animalName}</Text>
-          <Text style={styles.dateText}>
+          {/* <Text style={styles.dateText}>
             <Text style={styles.bold}>Ngày bắt đầu nuôi:</Text>{' '}
             {formattedDate(item.startDate)}
-          </Text>
+          </Text> */}
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
@@ -161,8 +161,8 @@ const AnimalHistory = () => {
                       source={{ uri: care.carePackageImages }}
                       style={styles.carePackageImage}
                     />
-                    <View>
-                      <Text style={[styles.modalText, { flexWrap: 'wrap' }]}>
+                    <View style={{ flex: 1 }}>
+                      <Text style={[styles.modalText, { flexShrink: 1 }]}>
                         <Text style={styles.bold}>Tên gói:</Text>{' '}
                         {care.carePackageName}
                       </Text>
@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   animalName: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '600',
     color: '#34495E', // Darker color for better readability
     marginBottom: 8,
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#FFFFFF',
-    fontSize: 14,
+    fontSize: 10,
     fontWeight: '600',
   },
   modalContainer: {
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
   },
   carePackage: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginBottom: 12,
     padding: 8,
     backgroundColor: '#F4F6F7',

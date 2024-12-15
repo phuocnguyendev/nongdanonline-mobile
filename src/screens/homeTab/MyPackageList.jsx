@@ -35,9 +35,9 @@ function MyPackageList() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Gói chăm sóc của bạn</Text>
-        <TouchableOpacity onPress={handleAddPackage}>
+        {/* <TouchableOpacity onPress={handleAddPackage}>
           <Ionicons name="add-circle-outline" size={24} color="#00a86b" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       {loading ? (
         <ActivityIndicator size="large" color="#00a86b" />

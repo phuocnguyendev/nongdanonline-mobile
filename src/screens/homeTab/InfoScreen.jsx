@@ -27,12 +27,12 @@ const InfoScreen = ({ blockData }) => {
           Hạn sử dụng ô đất: {formattedDate(endDate)}
         </Text>
         <Text style={styles.text}>Ngày còn lại: {remainingDays} ngày</Text>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.renewButton}
           onPress={() => alert('Gia hạn thành công!')}
         >
           <Text style={styles.renewButtonText}>Gia hạn</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   )

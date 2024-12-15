@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { format } from 'date-fns'
 import React, { useState } from 'react'
 import {
@@ -7,69 +7,102 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ScrollView,
 } from 'react-native'
 
 const HealthTable = ({ data }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 5
 
-  // Calculate total pages
   const totalPages = Math.ceil(data.length / itemsPerPage)
 
-  // Get data for the current page
   const getCurrentData = () => {
     const begin = (currentPage - 1) * itemsPerPage
     const end = begin + itemsPerPage
     return data.slice(begin, end)
   }
 
+  if (!data || data.length === 0) {
+    return (
+      <View style={styles.emptyContainer}>
+        <MaterialCommunityIcons
+          name="clipboard-text-clock"
+          size={80}
+          color="#CBD5E1"
+        />
+        <Text style={styles.emptyText}>Không có dữ liệu chăm sóc</Text>
+        <Text style={styles.emptySubText}>
+          Hãy thêm dữ liệu chăm sóc để theo dõi
+        </Text>
+      </View>
+    )
+  }
+
+  const renderTableHeader = () => (
+    <View style={styles.rowHeader}>
+      <View style={[styles.headerCell, { flex: 1 }]}>
+        <Text style={styles.headerCellText}>Ngày</Text>
+      </View>
+      <View style={[styles.headerCell, { flex: 0.8 }]}>
+        <Ionicons name="fitness" size={18} color="#007BFF" />
+        <Text style={styles.headerCellText}>KG</Text>
+      </View>
+      <View style={[styles.headerCell, { flex: 1 }]}>
+        <Ionicons name="fast-food" size={18} color="#28A745" />
+        <Text style={styles.headerCellText}>G/Ngày</Text>
+      </View>
+      <View style={[styles.headerCell, { flex: 2 }]}>
+        <Ionicons name="medkit" size={18} color="#DC3545" />
+        <Text style={styles.headerCellText}>Thuốc/Vaccine</Text>
+      </View>
+    </View>
+  )
+
+  const renderTableRow = ({ item }) => (
+    <View style={styles.row}>
+      <Text style={[styles.cell, { flex: 1 }]}>
+        {format(new Date(item.date), 'dd/MM')}
+      </Text>
+      <Text style={[styles.cell, { flex: 0.8 }]}>
+        {(item.weight / 1000).toFixed(1)}
+      </Text>
+      <Text style={[styles.cell, { flex: 1 }]}>{item.feedIntake || '-'}</Text>
+      <Text style={[styles.cell, styles.vaccineCell, { flex: 2 }]}>
+        {item.vaccines && item.vaccines.length > 0
+          ? item.vaccines
+              .map(
+                (vaccine) =>
+                  `${vaccine.vaccineName || '-'}: ${vaccine.vaccineDescription || '-'}`,
+              )
+              .join('\n')
+          : '-'}
+      </Text>
+    </View>
+  )
+
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Lịch sử chăm sóc</Text>
-
-      {/* Column Headers */}
-      <View style={styles.rowHeader}>
-        <Text style={styles.headerCell}>Ngày</Text>
-        <View style={styles.headerCellIcon}>
-          <Ionicons name="fitness" size={16} color="#007BFF" />
-          <Text style={styles.headerCellText}>Cân nặng (kg)</Text>
-        </View>
-        <View style={styles.headerCellIcon}>
-          <Ionicons name="fast-food" size={16} color="#28A745" />
-          <Text style={styles.headerCellText}>Thức ăn (gam/ngày)</Text>
-        </View>
-        <View style={styles.headerCellIcon}>
-          <Ionicons name="medkit" size={16} color="#DC3545" />
-          <Text style={styles.headerCellText}>Thuốc/Vaccine</Text>
-        </View>
+      <View style={styles.headerContainer}>
+        <MaterialCommunityIcons
+          name="clipboard-list"
+          size={24}
+          color="#1E293B"
+        />
+        <Text style={styles.header}>Lịch sử chăm sóc</Text>
       </View>
 
-      <FlatList
-        data={getCurrentData()}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.row}>
-            <Text style={styles.cell}>
-              {format(new Date(item.date), 'dd/MM/yyyy')}
-            </Text>
-            <Text style={styles.cell}>
-              {(item.weight / 1000).toFixed(2) || 'N/A'}
-            </Text>
-            <Text style={styles.cell}>{item.feedIntake || 'N/A'}</Text>
-            <Text style={[styles.cell, styles.vaccineCell]}>
-              {item.vaccines && item.vaccines.length > 0
-                ? item.vaccines
-                    .map(
-                      (vaccine) =>
-                        `${vaccine.vaccineName || 'N/A'} - ${vaccine.vaccineDescription || 'N/A'}`,
-                    )
-                    .join('\n')
-                : 'N/A'}
-            </Text>
-          </View>
-        )}
-        contentContainerStyle={styles.tableBody}
-      />
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <View style={styles.tableContainer}>
+          {renderTableHeader()}
+          <FlatList
+            data={getCurrentData()}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={renderTableRow}
+            scrollEnabled={false}
+            contentContainerStyle={styles.tableBody}
+          />
+        </View>
+      </ScrollView>
 
       <View style={styles.pagination}>
         <TouchableOpacity
@@ -80,7 +113,14 @@ const HealthTable = ({ data }) => {
             currentPage === 1 && styles.disabledButton,
           ]}
         >
-          <Text style={styles.pageButtonText}>Trước</Text>
+          <Text
+            style={[
+              styles.pageButtonText,
+              currentPage === 1 && styles.disabledButtonText,
+            ]}
+          >
+            Trước
+          </Text>
         </TouchableOpacity>
         <Text style={styles.pageIndicator}>
           Trang {currentPage} / {totalPages}
@@ -93,7 +133,14 @@ const HealthTable = ({ data }) => {
             currentPage === totalPages && styles.disabledButton,
           ]}
         >
-          <Text style={styles.pageButtonText}>Sau</Text>
+          <Text
+            style={[
+              styles.pageButtonText,
+              currentPage === totalPages && styles.disabledButtonText,
+            ]}
+          >
+            Sau
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -102,95 +149,136 @@ const HealthTable = ({ data }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 16,
     backgroundColor: '#ffffff',
-    borderRadius: 10,
+    borderRadius: 16,
+    padding: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
     elevation: 3,
+    margin: 10,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
   },
   header: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 16,
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#1E293B',
+    marginLeft: 8,
     textAlign: 'center',
-    color: '#333333',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  tableContainer: {
+    minWidth: '100%',
   },
   rowHeader: {
     flexDirection: 'row',
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
-    backgroundColor: '#F8F9FA',
-    alignItems: 'center',
+    paddingVertical: 16,
+    paddingHorizontal: 12,
+    backgroundColor: '#F8FAFC',
+    borderRadius: 8,
+    marginBottom: 12,
   },
   headerCell: {
-    flex: 1,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: '#333333',
-    fontSize: 14,
-  },
-  headerCellIcon: {
-    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 8,
   },
   headerCellText: {
-    marginLeft: 4,
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#333333',
+    marginLeft: 6,
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#475569',
   },
   tableBody: {
-    marginBottom: 16,
+    flexGrow: 1,
   },
   row: {
     flexDirection: 'row',
-    paddingVertical: 10,
+    paddingVertical: 16,
+    paddingHorizontal: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
+    borderBottomColor: '#E2E8F0',
     alignItems: 'center',
+    minHeight: 60,
   },
   cell: {
-    flex: 1,
+    fontSize: 15,
+    color: '#64748B',
     textAlign: 'center',
-    fontSize: 14,
-    color: '#333333',
-    paddingHorizontal: 4,
+    paddingHorizontal: 8,
+    lineHeight: 20,
   },
   vaccineCell: {
     textAlign: 'left',
+    lineHeight: 20,
   },
   pagination: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 16,
+    marginTop: 20,
+    paddingTop: 20,
+    borderTopWidth: 1,
+    borderTopColor: '#E2E8F0',
   },
   pageButton: {
-    backgroundColor: '#007BFF',
+    backgroundColor: '#EEF2FF',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
-    marginHorizontal: 8,
+    marginHorizontal: 10,
   },
   disabledButton: {
-    backgroundColor: '#D6D8DB',
+    backgroundColor: '#F1F5F9',
   },
   pageButtonText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
+    color: '#4F46E5',
+    fontWeight: '600',
     fontSize: 14,
+  },
+  disabledButtonText: {
+    color: '#94A3B8',
   },
   pageIndicator: {
     fontSize: 14,
-    color: '#333333',
-    fontWeight: 'bold',
+    color: '#475569',
+    fontWeight: '600',
+  },
+  emptyContainer: {
+    backgroundColor: '#ffffff',
+    borderRadius: 16,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 3,
+    margin: 10,
+    alignItems: 'center',
+    minHeight: 180,
+    justifyContent: 'center',
+  },
+  emptyText: {
+    fontSize: 15,
+    color: '#64748B',
+    textAlign: 'center',
+    fontWeight: '600',
+    marginTop: 16,
+  },
+  emptySubText: {
+    fontSize: 13,
+    color: '#94A3B8',
+    textAlign: 'center',
+    marginTop: 8,
+    paddingHorizontal: 20,
   },
 })
 

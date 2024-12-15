@@ -20,10 +20,7 @@ const BlockList = ({
       const animal = item.animalOwnerUsers?.[0]
       return (
         <MyFarmItem
-          image={
-            animal?.animalStageImageUrl ||
-            'https://res.cloudinary.com/dmyyf65yy/image/upload/v1724502434/fiverr/ypgjrvh2by4uf5yhzm6n.jpg'
-          }
+          image={animal?.animalStageImageUrl || ''}
           title={animal?.animalName || 'Chưa có vật nuôi'}
           farmCode={item.blockUserCode}
           hasAnimal={!!animal}

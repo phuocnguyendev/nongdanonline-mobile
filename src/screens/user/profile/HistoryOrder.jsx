@@ -36,9 +36,11 @@ export const HistoryOrder = () => {
 
   const orderStatusOptions = [
     { label: 'Tất cả trạng thái', value: '' },
-    { label: 'Hoàn thành', value: '1' },
-    { label: 'Đang xử lý', value: '0' },
-    { label: 'Hủy', value: '2' },
+    { label: 'Chờ Xác Nhận', value: '0' },
+    { label: 'Đã Xác Nhận', value: '1' },
+    { label: 'Đang Giao Hàng', value: '2' },
+    { label: 'Đã Giao Hàng', value: '3' },
+    { label: 'Đã Hủy', value: '4' },
   ]
 
   useEffect(() => {
@@ -194,27 +196,60 @@ export const HistoryOrder = () => {
     }
   }
 
+  const clearAllFilters = () => {
+    setOrderStatus('')
+    setStartDate(null)
+    setEndDate(null)
+    setOrderCode('')
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Lịch sử đơn hàng</Text>
+      <Text style={styles.title}>Lịch Sử Đơn Hàng</Text>
       <View style={styles.filters}>
-        <DropDownPicker
-          open={dropdownOpen}
-          value={orderStatus}
-          items={orderStatusOptions}
-          setOpen={setDropdownOpen}
-          setValue={setOrderStatus}
-          style={styles.dropdown}
-          placeholder="Trạng thái"
-        />
-        <TouchableOpacity
-          onPress={() => setShowStartDatePicker(true)}
-          style={styles.dateButton}
-        >
-          <Text style={styles.dateButtonText}>
-            {startDate ? startDate.toLocaleDateString('en-CA') : 'Ngày bắt đầu'}
-          </Text>
-        </TouchableOpacity>
+        <View style={styles.filterRow}>
+          <DropDownPicker
+            open={dropdownOpen}
+            value={orderStatus}
+            items={orderStatusOptions}
+            setOpen={setDropdownOpen}
+            setValue={setOrderStatus}
+            style={[styles.dropdown]}
+            containerStyle={{ width: '100%' }}
+            placeholder="Trạng Thái"
+            zIndex={3000}
+            zIndexInverse={1000}
+          />
+        </View>
+
+        <View style={styles.filterRow}>
+          <TouchableOpacity
+            onPress={() => setShowStartDatePicker(true)}
+            style={[styles.dateButton, { marginRight: 10 }]}
+          >
+            <Text style={styles.dateButtonText}>
+              {startDate ? startDate.toLocaleDateString('en-CA') : 'Từ Ngày'}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setShowEndDatePicker(true)}
+            style={styles.dateButton}
+          >
+            <Text style={styles.dateButtonText}>
+              {endDate ? endDate.toLocaleDateString('en-CA') : 'Đến Ngày'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.filterRow}>
+          <TextInput
+            style={styles.input}
+            placeholder="Mã Đơn Hàng"
+            value={orderCode}
+            onChangeText={(text) => setOrderCode(text)}
+          />
+        </View>
+
         {showStartDatePicker && (
           <DateTimePicker
             value={startDate || new Date()}
@@ -223,19 +258,12 @@ export const HistoryOrder = () => {
             onChange={(event, selectedDate) => {
               setShowStartDatePicker(false)
               if (selectedDate) {
-                setStartDate(new Date(selectedDate))
+                setStartDate(selectedDate)
               }
             }}
           />
         )}
-        <TouchableOpacity
-          onPress={() => setShowEndDatePicker(true)}
-          style={styles.dateButton}
-        >
-          <Text style={styles.dateButtonText}>
-            {endDate ? endDate.toLocaleDateString('en-CA') : 'Ngày kết thúc'}
-          </Text>
-        </TouchableOpacity>
+
         {showEndDatePicker && (
           <DateTimePicker
             value={endDate || new Date()}
@@ -244,17 +272,20 @@ export const HistoryOrder = () => {
             onChange={(event, selectedDate) => {
               setShowEndDatePicker(false)
               if (selectedDate) {
-                setEndDate(new Date(selectedDate))
+                setEndDate(selectedDate)
               }
             }}
           />
         )}
-        <TextInput
-          style={styles.input}
-          placeholder="Mã đơn hàng"
-          value={orderCode}
-          onChangeText={(text) => setOrderCode(text)}
-        />
+
+        {(orderStatus || startDate || endDate || orderCode) && (
+          <TouchableOpacity
+            style={styles.clearAllButton}
+            onPress={clearAllFilters}
+          >
+            <Text style={styles.clearAllText}>Xóa bộ lọc</Text>
+          </TouchableOpacity>
+        )}
       </View>
       {loading ? (
         <ActivityIndicator size="large" color="#00a86b" style={styles.loader} />
@@ -323,41 +354,43 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   filters: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    marginBottom: 20,
+    width: '100%',
+    gap: 10,
   },
-  dropdown: {
-    width: '45%',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    paddingHorizontal: 10,
-    backgroundColor: '#fff',
+  filterRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 10,
   },
-  dateButton: {
-    width: '45%',
+  dropdown: {
+    backgroundColor: '#fff',
+    borderColor: '#ddd',
     borderRadius: 8,
+    height: 40,
+  },
+  dateButton: {
+    flex: 1,
+    backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#ddd',
+    borderRadius: 8,
     padding: 10,
-    backgroundColor: '#fff',
+    height: 40,
     justifyContent: 'center',
   },
   dateButtonText: {
     color: '#555',
     fontSize: 14,
+    textAlign: 'center',
   },
   input: {
-    width: '100%',
+    flex: 1,
+    backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 8,
     padding: 10,
-    backgroundColor: '#fff',
-    marginBottom: 10,
+    height: 40,
   },
   loader: {
     marginTop: 50,
@@ -487,6 +520,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 5,
     color: '#007BFF',
+  },
+  clearAllButton: {
+    alignSelf: 'flex-end',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    backgroundColor: '#f1f1f1',
+    borderRadius: 15,
+    marginTop: 5,
+    marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  clearAllText: {
+    color: '#666',
+    fontSize: 12,
+    fontWeight: '500',
   },
 })
 
