@@ -1,6 +1,5 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import LanguageSwitchButton from '../ui/Button/LanguageSwitchButton'
 
 export default function Layout({ children }) {
   return (

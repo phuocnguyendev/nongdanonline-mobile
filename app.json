@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "NongDanOnline",
-    "slug": "NongDanOnline",
+    "slug": "nongdanonline",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "",
@@ -13,21 +13,21 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.kevintruong.NongDanOnline"
+      "bundleIdentifier": "com.dipstickit.NongDanOnline"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/LOGOOFFICIAL-02.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.kevintruong.NongDanOnline"
+      "package": "com.dipstickit.NongDanOnline"
     },
     "web": {
       "favicon": "./src/assets/LOGOOFFICIAL-02.png"
     },
     "extra": {
       "eas": {
-        "projectId": "2632e5e6-2f8e-40ce-843f-9694bdb68718"
+        "projectId": "c6e7f049-a56f-4364-947a-9e7675bb5f16"
       }
     }
   }
