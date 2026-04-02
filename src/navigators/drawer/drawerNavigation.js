@@ -32,7 +32,7 @@ function CustomDrawerContent(props) {
         onPress={() => navigation.navigate('Info')}
       >
         <ImageBackground
-          source={require('../../assets/background_user.png')}
+          source={require('../../assets/background_user.jpg')}
           style={styles.backgroundImage}
           resizeMode="cover"
         >

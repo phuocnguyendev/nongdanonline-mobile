@@ -66,14 +66,14 @@ export function Login({ navigation }) {
         <View style={styles.container}>
           <View style={styles.imageView}>
             <ImageBackground
-              source={require('../../assets/Background.png')}
+              source={require('../../assets/background.png')}
               style={styles.background}
               resizeMode="cover"
               blurRadius={5}
             />
             <SafeAreaView>
               <Image
-                source={require('../../assets/LOGOOFFICIAL-01.png')}
+                source={require('../../assets/logo1.png')}
                 style={styles.image}
               />
             </SafeAreaView>
