@@ -1,34 +1,4 @@
 {
-  "expo": {
-    "name": "NongDanOnline",
-    "slug": "nongdanonline",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./src/assets/logo2.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#fff"
-    },
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.dipstickit.NongDanOnline"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./src/assets/logo2.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.dipstickit.NongDanOnline"
-    },
-    "web": {
-      "favicon": "./src/assets/logo2.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "c6e7f049-a56f-4364-947a-9e7675bb5f16"
-      }
-    }
-  }
+  "name": "nongdanonline",
+  "displayName": "NongDanOnline"
 }

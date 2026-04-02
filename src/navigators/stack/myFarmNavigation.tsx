@@ -1,0 +1,42 @@
+import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AddAnimalScreen from '../../screens/homeTab/AddAnimalScreen';
+import AddPackageScreen from '../../screens/homeTab/AddPackageScreen';
+import InfoScreen from '../../screens/homeTab/InfoScreen';
+import MainImageScreen from '../../screens/homeTab/MainImageScreen';
+import { MyFarm } from '../../screens/homeTab/MyFarm';
+import MyFarmEditNavigation from './myFarmEditNavigation';
+
+const Stack = createStackNavigator();
+
+interface MyFarmNavigationProps {
+  navigation: { toggleDrawer: () => void };
+}
+
+export default function MyFarmNavigation({ navigation }: MyFarmNavigationProps): React.ReactElement {
+  return (
+    <Stack.Navigator screenOptions={{ headerBackTitleVisible: false }}>
+      <Stack.Screen
+        name="My Farm"
+        component={MyFarm}
+        options={{
+          headerShown: true,
+          title: 'Trang trại của tôi',
+          headerLeft: () => (
+            <Ionicons name="menu" size={24} color="#fff" style={{ marginLeft: 15 }} onPress={() => navigation.toggleDrawer()} />
+          ),
+          headerStyle: { backgroundColor: '#00a86b' },
+          headerTintColor: '#fff',
+          headerTitleStyle: { fontWeight: 'bold' },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen name="MainImageScreen" component={MainImageScreen} options={{ title: 'Chi tiết hình ảnh', headerStyle: { backgroundColor: '#00a86b' }, headerTintColor: '#fff', headerTitleAlign: 'center' }} />
+      <Stack.Screen name="My Farm Edit" component={MyFarmEditNavigation} options={{ headerShown: false }} />
+      <Stack.Screen name="InfoScreen" component={InfoScreen} options={{ title: 'Thông tin trang trại', headerStyle: { backgroundColor: '#00a86b' }, headerTintColor: '#fff', headerTitleAlign: 'center' }} />
+      <Stack.Screen name="AddAnimalScreen" component={AddAnimalScreen} options={{ title: 'Thêm động vật mới', headerStyle: { backgroundColor: '#00a86b' }, headerTintColor: '#fff', headerTitleAlign: 'center' }} />
+      <Stack.Screen name="AddPackageScreen" component={AddPackageScreen} options={{ title: 'Thêm gói mới', headerStyle: { backgroundColor: '#00a86b' }, headerTintColor: '#fff', headerTitleAlign: 'center' }} />
+    </Stack.Navigator>
+  );
+}

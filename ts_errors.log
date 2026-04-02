@@ -1,0 +1,120 @@
+src/api/config.ts(6,5): error TS2591: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
+src/components/app/packageView.tsx(40,7): error TS2304: Cannot find name 'alert'.
+src/components/app/packageView.tsx(44,7): error TS2304: Cannot find name 'alert'.
+src/components/app/packageView.tsx(61,5): error TS2304: Cannot find name 'alert'.
+src/components/app/productView.tsx(34,7): error TS2304: Cannot find name 'alert'.
+src/components/app/productView.tsx(38,7): error TS2304: Cannot find name 'alert'.
+src/components/app/productView.tsx(55,5): error TS2304: Cannot find name 'alert'.
+src/navigators/drawer/drawerNavigation.tsx(84,9): error TS2353: Object literal may only specify known properties, and 'gestureEnabled' does not exist in type 'DrawerNavigationOptions | ((props: { route: RouteProp<ParamListBase, string>; navigation: any; }) => DrawerNavigationOptions)'.
+src/navigators/Navigator.tsx(36,39): error TS2322: Type 'FC<CameraProps>' is not assignable to type 'ScreenComponentType<ParamListBase, "Camera"> | undefined'.
+  Type 'FunctionComponent<CameraProps>' is not assignable to type 'FunctionComponent<{}>'.
+    Types of parameters 'props' and 'props' are incompatible.
+      Type '{}' is not assignable to type 'CameraProps'.
+src/navigators/Navigator.tsx(39,11): error TS2322: Type 'FC<SensorProps>' is not assignable to type 'ScreenComponentType<ParamListBase, "Sensor"> | undefined'.
+  Type 'FunctionComponent<SensorProps>' is not assignable to type 'FunctionComponent<{}>'.
+    Types of parameters 'props' and 'props' are incompatible.
+      Type '{}' is not assignable to type 'SensorProps'.
+src/navigators/Navigator.tsx(59,11): error TS2322: Type 'FC<AddressScreenCreateProps>' is not assignable to type 'ScreenComponentType<ParamListBase, "AddAddress"> | undefined'.
+  Type 'FunctionComponent<AddressScreenCreateProps>' is not assignable to type 'FunctionComponent<{}>'.
+    Types of parameters 'props' and 'props' are incompatible.
+      Type '{}' is not assignable to type 'AddressScreenCreateProps'.
+src/navigators/stack/aboutFarmNavigation.tsx(17,9): error TS2322: Type '({ navigation, route }: FarmInfoProps) => ReactElement<any, string | JSXElementConstructor<any>>' is not assignable to type 'ScreenComponentType<ParamListBase, "Farm Info"> | undefined'.
+  Type '({ navigation, route }: FarmInfoProps) => ReactElement<any, string | JSXElementConstructor<any>>' is not assignable to type 'FunctionComponent<{}>'.
+    Types of parameters '__0' and 'props' are incompatible.
+      Type '{}' is missing the following properties from type 'FarmInfoProps': navigation, route
+src/navigators/stack/aboutFarmNavigation.tsx(23,9): error TS2322: Type '({ navigation, route }: ProductFarmProps) => ReactElement<any, string | JSXElementConstructor<any>>' is not assignable to type 'ScreenComponentType<ParamListBase, "Product Farm"> | undefined'.
+  Type '({ navigation, route }: ProductFarmProps) => ReactElement<any, string | JSXElementConstructor<any>>' is not assignable to type 'FunctionComponent<{}>'.
+    Types of parameters '__0' and 'props' are incompatible.
+      Type '{}' is missing the following properties from type 'ProductFarmProps': navigation, route
+src/navigators/stack/listFarmNavigation.tsx(31,49): error TS2322: Type '({ route }: AboutFarmNavigationProps) => ReactElement<any, string | JSXElementConstructor<any>>' is not assignable to type 'ScreenComponentType<ParamListBase, "AboutFarm Navigation"> | undefined'.
+  Type '({ route }: AboutFarmNavigationProps) => ReactElement<any, string | JSXElementConstructor<any>>' is not assignable to type 'FunctionComponent<{}>'.
+    Types of parameters '__0' and 'props' are incompatible.
+      Property 'route' is missing in type '{}' but required in type 'AboutFarmNavigationProps'.
+src/navigators/stack/myFarmNavigation.tsx(35,44): error TS2322: Type 'FC<MainImageScreenProps>' is not assignable to type 'ScreenComponentType<ParamListBase, "MainImageScreen"> | undefined'.
+  Type 'FunctionComponent<MainImageScreenProps>' is not assignable to type 'FunctionComponent<{}>'.
+    Types of parameters 'props' and 'props' are incompatible.
+      Type '{}' is not assignable to type 'MainImageScreenProps'.
+src/navigators/stack/myFarmNavigation.tsx(37,39): error TS2322: Type 'FC<InfoScreenProps>' is not assignable to type 'ScreenComponentType<ParamListBase, "InfoScreen"> | undefined'.
+  Type 'FunctionComponent<InfoScreenProps>' is not assignable to type 'FunctionComponent<{}>'.
+    Types of parameters 'props' and 'props' are incompatible.
+      Type '{}' is not assignable to type 'InfoScreenProps'.
+src/navigators/stack/myFarmNavigation.tsx(38,44): error TS2322: Type '({ route, navigation }: AddAnimalScreenProps) => ReactElement<any, string | JSXElementConstructor<any>>' is not assignable to type 'ScreenComponentType<ParamListBase, "AddAnimalScreen"> | undefined'.
+  Type '({ route, navigation }: AddAnimalScreenProps) => ReactElement<any, string | JSXElementConstructor<any>>' is not assignable to type 'FunctionComponent<{}>'.
+    Types of parameters '__0' and 'props' are incompatible.
+      Type '{}' is missing the following properties from type 'AddAnimalScreenProps': route, navigation
+src/navigators/stack/myFarmNavigation.tsx(39,45): error TS2322: Type '({ route, navigation }: AddPackageScreenProps) => ReactElement<any, string | JSXElementConstructor<any>>' is not assignable to type 'ScreenComponentType<ParamListBase, "AddPackageScreen"> | undefined'.
+  Type '({ route, navigation }: AddPackageScreenProps) => ReactElement<any, string | JSXElementConstructor<any>>' is not assignable to type 'FunctionComponent<{}>'.
+    Types of parameters '__0' and 'props' are incompatible.
+      Type '{}' is missing the following properties from type 'AddPackageScreenProps': route, navigation
+src/navigators/tab/tabNavigation.tsx(22,9): error TS2353: Object literal may only specify known properties, and 'lazyPlaceholder' does not exist in type 'BottomTabNavigationOptions | ((props: { route: RouteProp<ParamListBase, string>; navigation: any; }) => BottomTabNavigationOptions)'.
+src/screens/Authentication/Login.tsx(33,40): error TS2345: Argument of type 'LoginValues' is not assignable to parameter of type 'Record<string, string>'.
+  Index signature for type 'string' is missing in type 'LoginValues'.
+src/screens/Authentication/Login.tsx(34,15): error TS2339: Property 'token' does not exist on type 'AuthResponse'.
+src/screens/Authentication/Login.tsx(44,26): error TS2345: Argument of type '{ role: string; name: string; email: string; avatar: string; }' is not assignable to parameter of type 'UserInfo'.
+  Type '{ role: string; name: string; email: string; avatar: string; }' is missing the following properties from type 'UserInfo': id, phoneNumber, accessToken, refreshToken
+src/screens/Authentication/Login.tsx(71,135): error TS2322: Type '(e: any) => void' is not assignable to type '() => void'.
+  Target signature provides too few arguments. Expected 1 or more, but got 0.
+src/screens/Authentication/Login.tsx(73,137): error TS2322: Type '(e: any) => void' is not assignable to type '() => void'.
+src/screens/contact/contact.tsx(8,5): error TS2304: Cannot find name 'alert'.
+src/screens/emptyView/EmptyPage.tsx(19,24): error TS2304: Cannot find name 'alert'.
+src/screens/homeTab/Checkout.tsx(60,7): error TS2304: Cannot find name 'alert'.
+src/screens/homeTab/Checkout.tsx(76,9): error TS2304: Cannot find name 'alert'.
+src/screens/homeTab/Checkout.tsx(80,7): error TS2304: Cannot find name 'alert'.
+src/screens/homeTab/FarmList.tsx(18,53): error TS2345: Argument of type 'Farm[]' is not assignable to parameter of type 'SetStateAction<FarmData[]>'.
+  Type 'Farm[]' is not assignable to type 'FarmData[]'.
+    Type 'Farm' is missing the following properties from type 'FarmData': farmName, farmDescription, ownerPhone, farmImages
+src/screens/homeTab/InfoAnimal/Camera.tsx(3,35): error TS2307: Cannot find module 'expo-av' or its corresponding type declarations.
+src/screens/homeTab/InfoAnimal/Camera.tsx(24,24): error TS2591: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
+src/screens/homeTab/InfoAnimal/Camera.tsx(68,27): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/screens/homeTab/InfoAnimal/Sensor.tsx(83,26): error TS2554: Expected 4 arguments, but got 3.
+src/screens/homeTab/InfoAnimal/Sensor.tsx(85,38): error TS2339: Property 'dataLogs' does not exist on type 'SensorData[]'.
+src/screens/homeTab/MainImageScreen.tsx(40,38): error TS2322: Type 'FC<InfoScreenProps>' is not assignable to type 'ScreenComponentType<ParamListBase, "Thông tin"> | undefined'.
+  Type 'FunctionComponent<InfoScreenProps>' is not assignable to type 'FunctionComponent<{}>'.
+    Types of parameters 'props' and 'props' are incompatible.
+      Type '{}' is not assignable to type 'InfoScreenProps'.
+src/screens/homeTab/MainImageScreen.tsx(41,41): error TS2322: Type 'FC<CarePackageScreenProps>' is not assignable to type 'ScreenComponentType<ParamListBase, "Gói chăm sóc"> | undefined'.
+  Type 'FunctionComponent<CarePackageScreenProps>' is not assignable to type 'FunctionComponent<{}>'.
+    Types of parameters 'props' and 'props' are incompatible.
+      Type '{}' is not assignable to type 'CarePackageScreenProps'.
+src/screens/homeTab/MainImageScreen.tsx(42,44): error TS2322: Type 'FC<BlockInfoScreenProps>' is not assignable to type 'ScreenComponentType<ParamListBase, "Thông tin ô đất"> | undefined'.
+  Type 'FunctionComponent<BlockInfoScreenProps>' is not assignable to type 'FunctionComponent<{}>'.
+    Types of parameters 'props' and 'props' are incompatible.
+      Type '{}' is not assignable to type 'BlockInfoScreenProps'.
+src/screens/homeTab/MainImageScreen.tsx(43,38): error TS2322: Type 'FC<ActionsScreenProps>' is not assignable to type 'ScreenComponentType<ParamListBase, "Hành động"> | undefined'.
+  Type 'FunctionComponent<ActionsScreenProps>' is not assignable to type 'FunctionComponent<{}>'.
+    Types of parameters 'props' and 'props' are incompatible.
+      Type '{}' is not assignable to type 'ActionsScreenProps'.
+src/screens/homeTab/MyFarm.tsx(2,26): error TS7016: Could not find a declaration file for module 'lodash'. '/Users/nguyenhuuphuoc/Downloads/Front-end/ReactNative/nongdanonline-mobile/node_modules/lodash/lodash.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/lodash` if it exists or add a new declaration (.d.ts) file containing `declare module 'lodash';`
+src/screens/homeTab/MyFarm.tsx(30,16): error TS2345: Argument of type 'Farm[]' is not assignable to parameter of type 'SetStateAction<FarmData[]>'.
+  Type 'Farm[]' is not assignable to type 'FarmData[]'.
+    Property 'farmName' is missing in type 'Farm' but required in type 'FarmData'.
+src/screens/homeTab/MyFarm.tsx(42,15): error TS2339: Property 'items' does not exist on type 'Block[]'.
+src/screens/homeTab/MyFarm.tsx(42,22): error TS2339: Property 'totalPages' does not exist on type 'Block[]'.
+src/screens/homeTab/MyFarm.tsx(59,20): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'ScreenConfigMap'.
+  No index signature with a parameter of type 'string' was found on type 'ScreenConfigMap'.
+src/screens/homeTab/MyPackageList.tsx(13,122): error TS2345: Argument of type 'Package[]' is not assignable to parameter of type 'SetStateAction<PackageItem[]>'.
+  Type 'Package[]' is not assignable to type 'PackageItem[]'.
+    Type 'Package' is missing the following properties from type 'PackageItem': myPackageID, carePackageName, carePackageImages, myPackagePrice, and 2 more.
+src/screens/user/NotificationScreen.tsx(48,26): error TS2345: Argument of type 'NotificationItem[] | undefined' is not assignable to parameter of type 'SetStateAction<NotificationItem[]>'.
+  Type 'undefined' is not assignable to type 'SetStateAction<NotificationItem[]>'.
+src/screens/user/NotificationScreen.tsx(66,18): error TS2591: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
+src/screens/user/profile/AddressScreenCreate.tsx(30,33): error TS18046: 'response' is of type 'unknown'.
+src/screens/user/profile/AddressScreenCreate.tsx(61,66): error TS2561: Object literal may only specify known properties, but 'isdefault' does not exist in type 'Partial<UserAddress>'. Did you mean to write 'isDefault'?
+src/screens/user/profile/AnimalHistory.tsx(6,34): error TS1149: File name '/Users/nguyenhuuphuoc/Downloads/Front-end/ReactNative/nongdanonline-mobile/src/api/farm/Farm.ts' differs from already included file name '/Users/nguyenhuuphuoc/Downloads/Front-end/ReactNative/nongdanonline-mobile/src/api/farm/farm.ts' only in casing.
+  The file is in the program because:
+    Matched by include pattern 'src/**/*.ts' in '/Users/nguyenhuuphuoc/Downloads/Front-end/ReactNative/nongdanonline-mobile/tsconfig.json'
+    Imported via './farm' from file '/Users/nguyenhuuphuoc/Downloads/Front-end/ReactNative/nongdanonline-mobile/src/api/farm/index.ts'
+    Imported via '../../api/farm/farm' from file '/Users/nguyenhuuphuoc/Downloads/Front-end/ReactNative/nongdanonline-mobile/src/components/app/HealthRecord.tsx'
+    Imported via '../../../api/farm/Farm' from file '/Users/nguyenhuuphuoc/Downloads/Front-end/ReactNative/nongdanonline-mobile/src/screens/user/profile/AnimalHistory.tsx'
+    Imported via '../../../api/farm/Farm' from file '/Users/nguyenhuuphuoc/Downloads/Front-end/ReactNative/nongdanonline-mobile/src/screens/user/profile/ShippingHistory.tsx'
+src/screens/user/profile/HistoryOrder.tsx(63,77): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/screens/user/profile/ShippingHistory.tsx(8,24): error TS1149: File name '/Users/nguyenhuuphuoc/Downloads/Front-end/ReactNative/nongdanonline-mobile/src/api/farm/Farm.ts' differs from already included file name '/Users/nguyenhuuphuoc/Downloads/Front-end/ReactNative/nongdanonline-mobile/src/api/farm/farm.ts' only in casing.
+  The file is in the program because:
+    Matched by include pattern 'src/**/*.ts' in '/Users/nguyenhuuphuoc/Downloads/Front-end/ReactNative/nongdanonline-mobile/tsconfig.json'
+    Imported via './farm' from file '/Users/nguyenhuuphuoc/Downloads/Front-end/ReactNative/nongdanonline-mobile/src/api/farm/index.ts'
+    Imported via '../../api/farm/farm' from file '/Users/nguyenhuuphuoc/Downloads/Front-end/ReactNative/nongdanonline-mobile/src/components/app/HealthRecord.tsx'
+    Imported via '../../../api/farm/Farm' from file '/Users/nguyenhuuphuoc/Downloads/Front-end/ReactNative/nongdanonline-mobile/src/screens/user/profile/AnimalHistory.tsx'
+    Imported via '../../../api/farm/Farm' from file '/Users/nguyenhuuphuoc/Downloads/Front-end/ReactNative/nongdanonline-mobile/src/screens/user/profile/ShippingHistory.tsx'
+src/screens/user/profile/ShippingHistory.tsx(69,80): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/screens/user/profile/UpdateAddressPopup.tsx(34,33): error TS18046: 'response' is of type 'unknown'.
